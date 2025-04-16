@@ -69,6 +69,10 @@ public class UserController {
     }
 
     /**
+     * Todo 获取当前用户状态
+     */
+
+    /**
      * 退出登录
      *
      * @param request http请求
@@ -106,8 +110,6 @@ public class UserController {
         if (id == null) return false;
         return userService.removeById(id);   // 无需业务层
     }
-
-
 
     /**
      * 用户封禁 / 解封（仅管理员）
