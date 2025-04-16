@@ -9,8 +9,9 @@
 ### UmiJS：基于React的快速开发框架
 
 ### - 后端部分：
-### Spring Boot框架
-### MyBatis + Mybatis Plus框架
+### Spring Boot 后端框架
+### MyBatis + Mybatis Plus 框架
+### JUnit 单元测试框架
 
 ### Q：其中可能涉及的安全问题？
 ### A：- 针对密码泄露问题，我们采用了AES加密算法加密敏感信息，然后存储到数据库中（由于是简单项目，没有采用密钥管理系统，故统一采用作者设置的本地密钥和向量）；
