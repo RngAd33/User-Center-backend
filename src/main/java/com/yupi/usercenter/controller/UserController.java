@@ -95,7 +95,7 @@ public class UserController {
     }
 
     /**
-     * 用户删除 / 恢复（仅管理员，逻辑删除）
+     * 用户删除（仅管理员，逻辑删除）
      *
      * @param userManageRequest 用户管理请求体
      * @return 删除成功与否
