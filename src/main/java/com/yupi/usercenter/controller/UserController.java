@@ -1,7 +1,7 @@
 package com.yupi.usercenter.controller;
 
 import com.yupi.usercenter.constant.ErrorConstant;
-import com.yupi.usercenter.enums.UserEnum;
+import com.yupi.usercenter.enums.UserRoleEnum;
 import com.yupi.usercenter.model.User;
 import com.yupi.usercenter.model.request.UserLoginRequest;
 import com.yupi.usercenter.model.request.UserManageRequest;
@@ -142,9 +142,9 @@ public class UserController {
      * @return 是否（TF）为管理员
      */
     private static boolean isNotAdmin(HttpServletRequest request) {
-        Object userObj = request.getSession().getAttribute(UserEnum.USER_LOGIN_STATE.getKey());
+        Object userObj = request.getSession().getAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
         User user = (User) userObj;
-        if (user == null || !Objects.equals(user.getRole(), UserEnum.ADMIN_ROLE.getCode())) {
+        if (user == null || !Objects.equals(user.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
             System.out.println(ErrorConstant.USER_NOT_AUTH_MESSAGE);
             return true;
         }

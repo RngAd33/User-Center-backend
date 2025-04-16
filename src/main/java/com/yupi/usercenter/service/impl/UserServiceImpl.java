@@ -3,7 +3,9 @@ package com.yupi.usercenter.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupi.usercenter.constant.ErrorConstant;
-import static com.yupi.usercenter.enums.UserEnum.*;
+import static com.yupi.usercenter.enums.UserRoleEnum.*;
+
+import com.yupi.usercenter.enums.UserStatusEnum;
 import com.yupi.usercenter.mapper.UserMapper;
 import com.yupi.usercenter.model.User;
 import com.yupi.usercenter.service.UserService;
@@ -13,6 +15,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -126,10 +129,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return null;
         }
 
-        // 4. 信息脱敏
+        // 4. 判断账户是否被封禁
+        if (Objects.equals(user.getUserStatus(), UserStatusEnum.BAN.getValue())) {
+            log.info(ErrorConstant.USER_ALREADY_BAN_MESSAGE);
+            return null;
+        }
+
+        // 5. 信息脱敏
         User safeUser = getSafeUser(user);
 
-        // 5. 记录用户登录态（已脱敏）
+        // 6. 记录用户登录态（已脱敏）
         request.getSession().setAttribute(USER_LOGIN_STATE.getKey(), safeUser);
         return safeUser;
     }
