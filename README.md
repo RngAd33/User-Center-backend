@@ -1,6 +1,6 @@
 # 用户中心项目
 
-## 基于Ant Design Pro和Spring Boot的用户中心
+## 基于Ant Design Pro和Spring Boot的一站式用户管理系统
 ## 可以独立运行，也可以嵌入到其他项目当中，方便用户管理、提供个性化服务
 
 ### Q：这个项目采用了哪些技术选型？
