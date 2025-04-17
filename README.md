@@ -10,7 +10,7 @@
 
 ### - 后端部分：
 ### Spring Boot 后端框架
-### MyBatis + Mybatis Plus 框架
+### MyBatis + MyBatis Plus 框架
 ### JUnit 单元测试框架
 
 ### Q：其中可能涉及的安全问题？
