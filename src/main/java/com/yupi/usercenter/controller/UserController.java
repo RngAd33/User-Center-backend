@@ -69,8 +69,15 @@ public class UserController {
     }
 
     /**
-     * Todo 获取当前用户状态
+     * 获取当前用户状态
+     *
+     * @param request http请求
+     * @return 登录态
      */
+    @GetMapping("/current")
+    public User getCurrentUser(HttpServletRequest request) {
+        return userService.getCurrentUser(request);
+    }
 
     /**
      * 退出登录
@@ -79,7 +86,10 @@ public class UserController {
      * @return 状态码
      */
     @PostMapping("/logout")
-    public int userLogout(HttpServletRequest request) {
+    public Integer userLogout(HttpServletRequest request) {
+        if (request == null) {
+            return null;
+        }
         return userService.userLogout(request);
     }
 
@@ -107,7 +117,9 @@ public class UserController {
     @PostMapping("/admin/delete")
     public boolean userDelete(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
         Long id = getId(userManageRequest, request);
-        if (id == null) return false;
+        if (id == null) {
+            return false;
+        }
         return userService.removeById(id);   // 无需业务层
     }
 
@@ -118,9 +130,11 @@ public class UserController {
      * @return 操作后用户状态
      */
     @PostMapping("/admin/ban")
-    public int userOrBan(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
+    public Integer userOrBan(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
         Long id = getId(userManageRequest, request);
-        if (id == null) return -1;
+        if (id == null) {
+            return -1;
+        }
         return userService.userOrBan(id, request);
     }
 
@@ -131,9 +145,11 @@ public class UserController {
      * @return 状态码
      */
     @PostMapping("/admin/logoff")
-    public int userLogoff(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
+    public Integer userLogoff(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
         Long id = getId(userManageRequest, request);
-        if (id == null) return -1;
+        if (id == null) {
+            return -1;
+        }
         return userService.userLogoff(id, request);
     }
 
@@ -161,18 +177,10 @@ public class UserController {
      * @return id
      */
     private static Long getId(UserManageRequest userManageRequest, HttpServletRequest request) {
-        // 鉴权，仅管理员可操作
-        if (isNotAdmin(request)) {
-            return null;
-        }
-        // 验证请求体
-        if (userManageRequest == null) {
-            return null;
-        }
+        if (isNotAdmin(request)) return null;   // 鉴权，仅管理员可操作
+        if (userManageRequest == null) return null;   // 验证请求体
         Long id = userManageRequest.getId();
-        if (id <= 0) {
-            return null;
-        }
+        if (id <= 0) return null;
         return id;
     }
 

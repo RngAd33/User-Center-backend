@@ -3,8 +3,7 @@ package com.yupi.usercenter.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupi.usercenter.constant.ErrorConstant;
-import static com.yupi.usercenter.enums.UserRoleEnum.*;
-
+import com.yupi.usercenter.enums.UserRoleEnum;
 import com.yupi.usercenter.enums.UserStatusEnum;
 import com.yupi.usercenter.mapper.UserMapper;
 import com.yupi.usercenter.model.User;
@@ -139,15 +138,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User safeUser = getSafeUser(user);
 
         // 6. 记录用户登录态（已脱敏）
-        request.getSession().setAttribute(USER_LOGIN_STATE.getKey(), safeUser);
+        request.getSession().setAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey(), safeUser);
         return safeUser;
     }
 
     /**
      * 获取当前用户状态
+     *
+     * @param request http请求
+     * @return 登录态
      */
     @Override
-
+    public User getCurrentUser(HttpServletRequest request) {
+        Object userObj = request.getSession().getAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
+        User currentUser = (User) userObj;
+        if (currentUser == null) {
+            return null;
+        }
+        long id = currentUser.getId();
+        // todo 校验用户是否合法
+        User user = this.getById(id);
+        return getSafeUser(user);
+    }
 
     /**
      * 退出登录
@@ -156,10 +168,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 状态码
      */
     @Override
-    public int userLogout(HttpServletRequest request) {
+    public Integer userLogout(HttpServletRequest request) {
         // 移除登录态
-        request.getSession().removeAttribute(USER_LOGIN_STATE.getKey());
-        return 1;
+        request.getSession().removeAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
+        return 0;
     }
 
     /**
@@ -188,7 +200,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 状态码
      */
     @Override
-    public int userOrBan(@RequestBody Long id, HttpServletRequest request) {
+    public Integer userOrBan(@RequestBody Long id, HttpServletRequest request) {
         // 1. 查询用户是否存在
         User user = userMapper.selectById(id);
         if (user == null) {
@@ -218,14 +230,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 用户注销
-     * 从数据库中彻底删除账户
+     * 用户注销（当前仅管理员，从数据库中彻底删除账户）
      *
      * @param id 待注销用户id
      * @return 状态码
      */
     @Override
-    public int userLogoff(Long id, HttpServletRequest request) {
+    public Integer userLogoff(Long id, HttpServletRequest request) {
         // 1. 查询用户是否存在
         User user = userMapper.selectById(id);
         if (user == null) {

@@ -35,7 +35,7 @@ public interface UserService extends IService<User> {
      * @param request http请求
      * @return 登录态
      */
-    User getLoginUser(HttpServletRequest request);
+    User getCurrentUser(HttpServletRequest request);
 
     /**
      * 退出登录
@@ -43,7 +43,7 @@ public interface UserService extends IService<User> {
      * @param request http请求
      * @return 状态码
      */
-    int userLogout(HttpServletRequest request);
+    Integer userLogout(HttpServletRequest request);
 
     /**
      * 用户查询（仅管理员）
@@ -59,7 +59,7 @@ public interface UserService extends IService<User> {
      * @param id 待封禁/解封用户id
      * @return 状态码
      */
-    int userOrBan(Long id, HttpServletRequest request);
+    Integer userOrBan(Long id, HttpServletRequest request);
 
     /**
      * 用户注销
@@ -67,6 +67,6 @@ public interface UserService extends IService<User> {
      * @param id 待注销用户id
      * @return 注销结果
      */
-    int userLogoff(Long id, HttpServletRequest request);
+    Integer userLogoff(Long id, HttpServletRequest request);
 
 }
