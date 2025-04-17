@@ -19,7 +19,7 @@ public class User implements Serializable {
     private String userName;
 
     /**
-     * 用户id
+     * 用户 id
      *
      */
     @TableId(type = IdType.AUTO)
