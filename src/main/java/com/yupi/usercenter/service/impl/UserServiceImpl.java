@@ -144,6 +144,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
+     * 获取当前用户状态
+     */
+    @Override
+
+
+    /**
      * 退出登录
      *
      * @param request http请求

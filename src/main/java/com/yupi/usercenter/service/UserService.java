@@ -30,6 +30,14 @@ public interface UserService extends IService<User> {
     User userLogin(String userName, String userPassword, HttpServletRequest request) throws Exception;
 
     /**
+     * 获取当前用户状态
+     *
+     * @param request http请求
+     * @return 登录态
+     */
+    User getLoginUser(HttpServletRequest request);
+
+    /**
      * 退出登录
      *
      * @param request http请求
