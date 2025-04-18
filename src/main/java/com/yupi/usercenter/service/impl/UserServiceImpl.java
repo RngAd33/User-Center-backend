@@ -116,15 +116,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      *
      * @param userName 账号
      * @param userPassword 密码
-     * @param planetCode 星球编号
      * @param request http请求
      * @return 脱敏后的用户信息
      */
     @Override
-    public User userLogin(String userName, String userPassword, String planetCode, HttpServletRequest request) throws Exception {
+    public User userLogin(String userName, String userPassword, HttpServletRequest request) throws Exception {
         // 1. 信息校验
         // - 字段不能为空
-        if (StringUtils.isAnyBlank(userName, userPassword, planetCode)) {
+        if (StringUtils.isAnyBlank(userName, userPassword)) {
             log.info(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
             return null;
         }
@@ -141,7 +140,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userName", userName);
         queryWrapper.eq("userPassword", encryptedPassword);
-        queryWrapper.eq("planetCode", planetCode);
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
             log.info(ErrorConstant.USER_NOT_EXIST_MESSAGE);

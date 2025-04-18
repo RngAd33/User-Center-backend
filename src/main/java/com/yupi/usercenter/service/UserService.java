@@ -26,10 +26,9 @@ public interface UserService extends IService<User> {
      *
      * @param userName 账号
      * @param userPassword 密码
-     * @param planetCode 星球编号
      * @return 脱敏后的用户信息
      */
-    User userLogin(String userName, String userPassword, String planetCode, HttpServletRequest request) throws Exception;
+    User userLogin(String userName, String userPassword, HttpServletRequest request) throws Exception;
 
     /**
      * 获取当前用户状态

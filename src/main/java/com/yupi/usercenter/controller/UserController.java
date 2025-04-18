@@ -64,12 +64,11 @@ public class UserController {
         }
         String userName = userLoginRequest.getUserName();
         String userPassword = userLoginRequest.getUserPassword();
-        String planetCode = userLoginRequest.getPlanetCode();
         // 校验参数（倾向于对参数本身的校验，不涉及业务逻辑）
-        if (StringUtils.isAnyBlank(userName, userPassword, planetCode)) {
+        if (StringUtils.isAnyBlank(userName, userPassword)) {
             return null;
         }
-        return userService.userLogin(userName, userPassword, planetCode, request);
+        return userService.userLogin(userName, userPassword, request);
     }
 
     /**
