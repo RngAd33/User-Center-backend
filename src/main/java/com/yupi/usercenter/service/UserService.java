@@ -18,7 +18,7 @@ public interface UserService extends IService<User> {
      * @param checkPassword 确认密码
      * @return 新账户id
      */
-    Long userRegister(String userName, String userPassword, String checkPassword) throws Exception;
+    Long userRegister(String userName, String userPassword, String checkPassword, String planetCode) throws Exception;
 
     /**
      * 用户登录
@@ -27,7 +27,7 @@ public interface UserService extends IService<User> {
      * @param userPassword 密码
      * @return 脱敏后的用户信息
      */
-    User userLogin(String userName, String userPassword, HttpServletRequest request) throws Exception;
+    User userLogin(String userName, String userPassword, String planetCode, HttpServletRequest request) throws Exception;
 
     /**
      * 获取当前用户状态

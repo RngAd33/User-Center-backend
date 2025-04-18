@@ -40,10 +40,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 新账户id
      */
     @Override
-    public Long userRegister(String userName, String userPassword, String checkPassword) throws Exception {
+    public Long userRegister(String userName, String userPassword, String checkPassword, String planetCode) throws Exception {
         // 1. 信息校验
         // - 字段不能为空
-        if (StringUtils.isAnyBlank(userName, userPassword, checkPassword)) {
+        if (StringUtils.isAnyBlank(userName, userPassword, checkPassword, planetCode)) {
             log.info(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
             return null;
         }
@@ -102,10 +102,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 脱敏后的用户信息
      */
     @Override
-    public User userLogin(String userName, String userPassword, HttpServletRequest request) throws Exception {
+    public User userLogin(String userName, String userPassword, String planetCode, HttpServletRequest request) throws Exception {
         // 1. 信息校验
         // - 字段不能为空
-        if (StringUtils.isAnyBlank(userName, userPassword)) {
+        if (StringUtils.isAnyBlank(userName, userPassword, planetCode)) {
             log.info(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
             return null;
         }
