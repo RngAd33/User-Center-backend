@@ -62,21 +62,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.info(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);
             return null;
         }
-        // 密码和确认密码必须一致
+        // - 密码和确认密码必须一致
         if (!userPassword.equals(checkPassword)) {
             log.info("——！两次密码输入不一致！——");
             return null;
         }
-        // - 账户查重
+
+        // 2. 账户查重
+        // - 名称查重
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userName", userName);
         long count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
-            log.info(ErrorConstant.USER_ALREADY_EXIST_MESSAGE);
+            log.info(ErrorConstant.USER_NAME_ALREADY_EXIST_MESSAGE);
+            return null;
+        }
+        // - 编号查重
+        queryWrapper.eq("planetCode", planetCode);
+        count = userMapper.selectCount(queryWrapper);
+        if (count > 0) {
+            log.info(ErrorConstant.PLANET_CODE_ALREADY_EXIST_MESSAGE);
             return null;
         }
 
-        // 2. 密码加密
+        // 3. 密码加密
         String encryptedPassword = AESUtils.doEncrypt(userPassword);
         if (encryptedPassword == null) {
             log.info(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
@@ -84,7 +93,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         log.info("密码已加密>>>");
 
-        // 3. 向数据库插入数据
+        // 4. 向数据库插入数据
         User user = new User();
         user.setUserName(userName);
         user.setUserPassword(encryptedPassword);
@@ -95,7 +104,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         log.info("数据插入成功，注册完成>>>");
 
-        // 4. 返回新账户id
+        // 5. 返回新账户id
         return user.getId();
     }
 
