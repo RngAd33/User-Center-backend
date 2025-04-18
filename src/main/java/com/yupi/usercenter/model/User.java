@@ -6,7 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 用户模型（当前採用完整版数据库表 UserAll）
+ * 用户模型
+ *
  * @TableName user
  */
 @Data
@@ -14,15 +15,15 @@ import java.util.Date;
 public class User implements Serializable {
 
     /**
-     * 用户昵称
-     */
-    private String userName;
-
-    /**
      * 用户 id
      */
     @TableId(type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 用户昵称
+     */
+    private String userName;
 
     /**
      * 星球编号
