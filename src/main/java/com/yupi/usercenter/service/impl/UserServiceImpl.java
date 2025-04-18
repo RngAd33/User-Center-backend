@@ -37,6 +37,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param userName 账户
      * @param userPassword 密码
      * @param checkPassword 确认密码
+     * @param planetCode 星球编号
      * @return 新账户id
      */
     @Override
@@ -99,6 +100,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      *
      * @param userName 账号
      * @param userPassword 密码
+     * @param planetCode 星球编号
+     * @param request http请求
      * @return 脱敏后的用户信息
      */
     @Override
