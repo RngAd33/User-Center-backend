@@ -16,9 +16,9 @@ public class BaseResponse<T> implements Serializable {
     private int code;
 
     /**
-     * 数据
+     * 泛型数据
      */
-    private T data;   // 数据类型可变
+    private T data;
 
     /**
      * 消息
