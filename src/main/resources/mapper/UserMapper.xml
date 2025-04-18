@@ -7,7 +7,7 @@
     <resultMap id="BaseResultMap" type="com.yupi.usercenter.model.User">
         <id property="id" column="id" />
         <result property="userName" column="userName" />
-        <result property="userAccount" column="userAccount" />
+        <result property="planetCode" column="planetCode" />
         <result property="role" column="role" />
         <result property="avatarUrl" column="avatarUrl" />
         <result property="gender" column="gender" />
@@ -22,8 +22,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,username,userName,avatarUrl,gender,userPassword,
-        age,phone,email,userStatus,createTime,
-        updateTime,isDelete
+        id,userName,planetCode,role,avatarUrl,gender,userPassword,
+        age,phone,email,userStatus,createTime,updateTime,isDelete
     </sql>
 </mapper>

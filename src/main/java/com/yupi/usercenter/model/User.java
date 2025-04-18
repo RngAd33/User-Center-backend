@@ -20,15 +20,14 @@ public class User implements Serializable {
 
     /**
      * 用户 id
-     *
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 账号
+     * 星球编号
      */
-    private String userAccount;
+    private String planetCode;
 
     /**
      * 身份？ 0-普通用户，1-管理员

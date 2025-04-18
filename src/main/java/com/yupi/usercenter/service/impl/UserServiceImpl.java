@@ -156,7 +156,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return null;
         }
         long id = currentUser.getId();
+        if (id <= 0) {
+            return null;
+        }
         // todo 校验用户是否合法
+
         User user = this.getById(id);
         return getSafeUser(user);
     }
@@ -257,9 +261,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 脱敏后的账户信息
      */
     private static User getSafeUser(User user) {
+        if (user == null) {
+            return null;
+        }
         User safeUser = new User();
-        safeUser.setUserName(user.getUserName());
         safeUser.setId(user.getId());
+        safeUser.setUserName(user.getUserName());
+        safeUser.setPlanetCode(user.getPlanetCode());
         safeUser.setRole(user.getRole());
         safeUser.setAvatarUrl(user.getAvatarUrl());
         safeUser.setGender(user.getGender());
@@ -272,5 +280,4 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         safeUser.setUpdateTime(new Date());
         return safeUser;
     }
-
 }
