@@ -53,8 +53,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.info("——！账户名称长度或密码长度太短！——");
             return null;
         }
-        // - todo 星球编号长度限制
-        if (planetCode.length() > 5) {
+        // - 星球编号限制总人数（总人数 = 10 ^ planetCode.length() - 1）
+        if (planetCode.length() <= 1 || planetCode.length() > 5) {
             return null;
         }
         // - 账户名称不能包含特殊字符
@@ -255,7 +255,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return -1;
         }
         // 2. 从数据库中删除账户
-
+        int result = userMapper.deleteById(id);
+        if (result <= 0) {
+            return -1;
+        }
         // 3. 返回状态码
         return 0;
     }
