@@ -55,7 +55,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return null;
         }
         // - 星球编号限制总人数（总人数 = 10 ^ planetCode.length() - 1）
-        if (planetCode.length() <= 1 || planetCode.length() > 5) {
+        if (planetCode.length() > 5) {
             return null;
         }
         // - 账户名称不能包含特殊字符
