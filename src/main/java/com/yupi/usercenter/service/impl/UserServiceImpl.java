@@ -53,6 +53,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.info("——！账户名称长度或密码长度太短！——");
             return null;
         }
+        // - todo 星球编号长度限制
+        if (planetCode.length() > 5) {
+            return null;
+        }
         // - 账户名称不能包含特殊字符
         if (SpecialCharValidator.doValidate(userName)) {
             log.info(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);

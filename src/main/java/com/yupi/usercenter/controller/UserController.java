@@ -42,7 +42,7 @@ public class UserController {
         String checkPassword = userRegisterRequest.getCheckPassword();
         String planetCode = userRegisterRequest.getPlanetCode();
         // 校验参数（倾向于对参数本身的校验，不涉及业务逻辑）
-        if (StringUtils.isAnyBlank(userName, userPassword, checkPassword)) {
+        if (StringUtils.isAnyBlank(userName, userPassword, checkPassword, planetCode)) {
             return null;
         }
         return userService.userRegister(userName, userPassword, checkPassword, planetCode);
@@ -64,10 +64,10 @@ public class UserController {
         String userPassword = userLoginRequest.getUserPassword();
         String planetCode = userLoginRequest.getPlanetCode();
         // 校验参数（倾向于对参数本身的校验，不涉及业务逻辑）
-        if (StringUtils.isAnyBlank(userName, userPassword)) {
+        if (StringUtils.isAnyBlank(userName, userPassword, planetCode)) {
             return null;
         }
-        return userService.userLogin(userName, userPassword, planetCode,request);
+        return userService.userLogin(userName, userPassword, planetCode, request);
     }
 
     /**
