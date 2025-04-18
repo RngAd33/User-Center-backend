@@ -2,6 +2,7 @@ package com.yupi.usercenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yupi.usercenter.constant.AESConstant;
 import com.yupi.usercenter.constant.ErrorConstant;
 import com.yupi.usercenter.enums.UserRoleEnum;
 import com.yupi.usercenter.enums.UserStatusEnum;
@@ -50,7 +51,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         // - 长度限制
         if (userName.length() < 3 || userPassword.length() < 8 || checkPassword.length() < 8) {
-            log.info("——！账户名称长度或密码长度太短！——");
+            log.info(ErrorConstant.LENGTH_ERROR_MESSAGE);
             return null;
         }
         // - 星球编号限制总人数（总人数 = 10 ^ planetCode.length() - 1）
@@ -64,11 +65,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         // - 密码和确认密码必须一致
         if (!userPassword.equals(checkPassword)) {
-            log.info("——！两次密码输入不一致！——");
+            log.info(ErrorConstant.PASSWD_NOT_REPEAT_MESSAGE);
             return null;
         }
 
-        // 2. 账户查重
+        // 2. 账户信息查重
         // - 名称查重
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userName", userName);
@@ -78,6 +79,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return null;
         }
         // - 编号查重
+        queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("planetCode", planetCode);
         count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
@@ -97,6 +99,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = new User();
         user.setUserName(userName);
         user.setUserPassword(encryptedPassword);
+        user.setPlanetCode(planetCode);
         boolean saveResult = this.save(user);
         if (!saveResult) {
             log.info(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
@@ -138,6 +141,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userName", userName);
         queryWrapper.eq("userPassword", encryptedPassword);
+        queryWrapper.eq("planetCode", planetCode);
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
             log.info(ErrorConstant.USER_NOT_EXIST_MESSAGE);
@@ -208,7 +212,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         List<User> userList = this.list(queryWrapper);
         return userList.stream().map(user -> {
-            user.setUserPassword("想要密码？就不告诉你！");   // 密码保护
+            user.setUserPassword(AESConstant.CONFUSION);   // 密码保护
             return user;
         }).collect(Collectors.toList());
     }
@@ -242,9 +246,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         // 4. 返回操作结果
         if (newStatus != 0) {
-            System.out.println("用户已封禁");
+            log.info("用户已封禁");
         } else {
-            System.out.println("用户已解封");
+            log.info("用户已解封");
         }
         return 0;
     }
@@ -264,12 +268,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return -1;
         }
         // 2. 从数据库中删除账户
-        int result = userMapper.deleteById(id);
-        if (result <= 0) {
-            return -1;
-        }
-        // 3. 返回状态码
-        return 0;
+        return userMapper.deleteById(id);
     }
 
     /**
@@ -290,7 +289,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         safeUser.setRole(user.getRole());
         safeUser.setAvatarUrl(user.getAvatarUrl());
         safeUser.setGender(user.getGender());
-        safeUser.setUserPassword("****************");
+        safeUser.setUserPassword(AESConstant.CONFUSION);
         safeUser.setAge(user.getAge());
         safeUser.setPhone("***********");
         safeUser.setEmail(user.getEmail());

@@ -9,6 +9,8 @@ public interface AESConstant {
 
     String ALGORITHM = "AES";
 
+    String CONFUSION = "*****************";
+
     String TRANSFORMATION = "AES/CBC/PKCS5Padding";
 
     String KEY_FILE_PATH = System.getProperty("user.dir") + File.separator + "src/main/java/com/yupi/usercenter/model/temp/aes_key.bin";

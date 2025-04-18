@@ -11,6 +11,10 @@ public interface ErrorConstant {
 
     String PLANET_CODE_ALREADY_EXIST_MESSAGE = "——！编号已存在！——";
 
+    String PASSWD_NOT_REPEAT_MESSAGE = "——！两次密码输入不一致！——";
+
+    String LENGTH_ERROR_MESSAGE = "——！账户名称长度或密码长度太短！——";
+
     String USER_NOT_LOGIN_MESSAGE = "——！用户未登录！——";
 
     String USER_NOT_AUTH_MESSAGE = "——！用户未授权！——";
