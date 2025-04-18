@@ -1,5 +1,6 @@
 package com.yupi.usercenter.controller;
 
+import com.yupi.usercenter.common.BaseResponse;
 import com.yupi.usercenter.constant.ErrorConstant;
 import com.yupi.usercenter.enums.UserRoleEnum;
 import com.yupi.usercenter.model.User;
@@ -33,7 +34,7 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping("/register")
-    public Long userRegister(@RequestBody UserRegisterRequest userRegisterRequest) throws Exception {
+    public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) throws Exception {
         if (userRegisterRequest == null) {
             return null;
         }
@@ -45,7 +46,8 @@ public class UserController {
         if (StringUtils.isAnyBlank(userName, userPassword, checkPassword, planetCode)) {
             return null;
         }
-        return userService.userRegister(userName, userPassword, checkPassword, planetCode);
+        long result = userService.userRegister(userName, userPassword, checkPassword, planetCode);
+        return new BaseResponse<>(0, result, "OK");
     }
 
     /**
