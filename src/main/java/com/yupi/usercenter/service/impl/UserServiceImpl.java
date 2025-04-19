@@ -258,7 +258,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param id 待注销用户id
      * @return 状态码
      */
-    @Transactional
     @Override
     public Integer userLogoff(Long id, HttpServletRequest request) {
         // 1. 查询用户是否存在
