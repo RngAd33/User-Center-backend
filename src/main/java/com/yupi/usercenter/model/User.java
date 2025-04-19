@@ -15,7 +15,8 @@ import java.util.Date;
 public class User implements Serializable {
 
     /**
-     * 用户id（主要服务于Mapper）
+     * 用户 id（主要服务于Mapper）
+     * 当前策略为主键自增
      */
     @TableId(type = IdType.AUTO)
     private Long id;
