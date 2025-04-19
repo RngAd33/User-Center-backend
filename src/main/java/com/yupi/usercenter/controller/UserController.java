@@ -159,7 +159,7 @@ public class UserController {
     }
 
     /**
-     * 鉴权
+     * 鉴权（反向）
      *
      * @param request http请求
      * @return 是否（TF）为管理员
