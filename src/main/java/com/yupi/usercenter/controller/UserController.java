@@ -177,7 +177,7 @@ public class UserController {
     }
 
     /**
-     * 用户 id 传递
+     * id传递
      *
      * @param userManageRequest 用户管理请求体
      * @param request 用户登录态
