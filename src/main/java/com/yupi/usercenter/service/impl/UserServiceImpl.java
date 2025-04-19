@@ -277,9 +277,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 脱敏后的账户信息
      */
     private static User getSafeUser(User user) {
-        if (user == null) {
-            return null;
-        }
+        if (user == null) return null;
         User safeUser = new User();
         safeUser.setId(user.getId());
         safeUser.setUserName(user.getUserName());

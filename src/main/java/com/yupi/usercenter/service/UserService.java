@@ -26,7 +26,7 @@ public interface UserService extends IService<User> {
      *
      * @param userName 账号
      * @param userPassword 密码
-     * @return 脱敏后的用户信息
+     * @return 脱敏后的登录态
      */
     User userLogin(String userName, String userPassword, HttpServletRequest request) throws Exception;
 

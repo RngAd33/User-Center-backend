@@ -8,6 +8,7 @@ import com.yupi.usercenter.model.request.UserLoginRequest;
 import com.yupi.usercenter.model.request.UserManageRequest;
 import com.yupi.usercenter.model.request.UserRegisterRequest;
 import com.yupi.usercenter.service.UserService;
+import com.yupi.usercenter.utils.ResultUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -46,8 +47,8 @@ public class UserController {
         if (StringUtils.isAnyBlank(userName, userPassword, checkPassword, planetCode)) {
             return null;
         }
-        long result = userService.userRegister(userName, userPassword, checkPassword, planetCode);
-        return new BaseResponse<>(0, result, "OK");
+        Long result = userService.userRegister(userName, userPassword, checkPassword, planetCode);
+        return ResultUtils.success(result);
     }
 
     /**
@@ -58,7 +59,7 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping("/login")
-    public User userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) throws Exception {
+    public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) throws Exception {
         if (userLoginRequest == null) {
             return null;
         }
@@ -68,7 +69,8 @@ public class UserController {
         if (StringUtils.isAnyBlank(userName, userPassword)) {
             return null;
         }
-        return userService.userLogin(userName, userPassword, request);
+        User user = userService.userLogin(userName, userPassword, request);
+        return ResultUtils.success(user);
     }
 
     /**
@@ -173,7 +175,7 @@ public class UserController {
     }
 
     /**
-     * 用户id传递
+     * 用户 id 传递
      *
      * @param userManageRequest 用户管理请求体
      * @param request 用户登录态
