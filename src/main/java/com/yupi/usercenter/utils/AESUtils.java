@@ -183,15 +183,16 @@ public class AESUtils {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        // 生成随机密钥和IV
-        // SecretKey key = generateKey();
-        // byte[] iv = generateIV();
+        /* 生成随机密钥和IV
+        SecretKey key = generateKey();
+        byte[] iv = generateIV();
 
         // 保存密钥和IV到文件
-        // saveKey(key);
-        // System.out.println("密钥已保存到文件。");
-        // saveIV(iv);
-        // System.out.println("IV已保存到文件。");
+        saveKey(key);
+        System.out.println("密钥已保存到文件。");
+        saveIV(iv);
+        System.out.println("IV已保存到文件。");
+         */
 
         // 从文件加载密钥
         SecretKey loadedKey = loadKey();
@@ -224,5 +225,4 @@ public class AESUtils {
         // 验证解密结果
         System.out.println("解密结果验证: " + originalText.equals(decryptedText));
     }
-
 }
