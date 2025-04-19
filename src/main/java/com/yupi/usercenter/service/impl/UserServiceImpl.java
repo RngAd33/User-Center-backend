@@ -275,7 +275,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * 使用掩码隐藏敏感信息，保障传输层安全
      *
      * @param user 脱敏前的账户
-     * @return 脱敏后的账户信息
+     * @return 脱敏后的账户
      */
     private static User getSafeUser(User user) {
         if (user == null) return null;
