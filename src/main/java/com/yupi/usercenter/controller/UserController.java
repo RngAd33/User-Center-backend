@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -149,6 +150,7 @@ public class UserController {
      * @param userManageRequest 用户管理请求体
      * @return 状态码
      */
+    @Transactional
     @PostMapping("/admin/logoff")
     public Integer userLogoff(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
         Long id = getId(userManageRequest, request);

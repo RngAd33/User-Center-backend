@@ -6,6 +6,4 @@ import com.yupi.usercenter.model.User;
 /**
  * 用户 Mapper（继承 Mybatis-Plus）
  */
-public interface UserMapper extends BaseMapper<User> {
-
-}
+public interface UserMapper extends BaseMapper<User> {}

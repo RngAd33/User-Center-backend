@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -257,6 +258,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param id 待注销用户id
      * @return 状态码
      */
+    @Transactional
     @Override
     public Integer userLogoff(Long id, HttpServletRequest request) {
         // 1. 查询用户是否存在
