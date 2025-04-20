@@ -87,6 +87,9 @@ public class User implements Serializable {
     @TableLogic
     private Integer isDelete;
 
+    /**
+     * 序列化版本号
+     */
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

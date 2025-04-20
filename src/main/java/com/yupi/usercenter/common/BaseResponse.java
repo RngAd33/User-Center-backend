@@ -23,12 +23,12 @@ public class BaseResponse<T> implements Serializable {
     /**
      * 消息
      */
-    private String message;
+    private String msg;
 
-    public BaseResponse(int code, T data, String message) {
+    public BaseResponse(int code, T data, String msg) {
         this.code = code;
         this.data = data;
-        this.message = message;
+        this.msg = msg;
     }
 
     public BaseResponse(int code, T data) {
