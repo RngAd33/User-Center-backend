@@ -273,7 +273,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 用户脱敏
      * 使用掩码隐藏敏感信息，保障传输层安全
-     *
      * @param user 脱敏前的账户
      * @return 脱敏后的账户
      */
@@ -288,7 +287,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         safeUser.setGender(user.getGender());
         safeUser.setUserPassword(AESConstant.CONFUSION);
         safeUser.setAge(user.getAge());
-        safeUser.setPhone("***********");
+        safeUser.setPhone(AESConstant.CONFUSION);
         safeUser.setEmail(user.getEmail());
         safeUser.setUserStatus(user.getUserStatus());
         safeUser.setCreateTime(user.getCreateTime());

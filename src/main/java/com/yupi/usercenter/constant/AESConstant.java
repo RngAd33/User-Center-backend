@@ -9,7 +9,7 @@ public interface AESConstant {
 
     String ALGORITHM = "AES";
 
-    String CONFUSION = "*****************";
+    String CONFUSION = "***********";
 
     String TRANSFORMATION = "AES/CBC/PKCS5Padding";
 
