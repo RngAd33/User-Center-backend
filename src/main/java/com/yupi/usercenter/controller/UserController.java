@@ -76,7 +76,7 @@ public class UserController {
     }
 
     /**
-     * 获取当前用户状态
+     * 获取当前用户登录态
      *
      * @param request http请求
      * @return 登录态
