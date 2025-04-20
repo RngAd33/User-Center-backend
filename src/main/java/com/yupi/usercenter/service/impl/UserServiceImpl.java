@@ -1,6 +1,7 @@
 package com.yupi.usercenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupi.usercenter.constant.AESConstant;
 import com.yupi.usercenter.constant.ErrorConstant;
@@ -178,8 +179,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (id <= 0) {
             return null;
         }
-        // todo 校验用户是否合法
-
         User user = this.getById(id);
         return getSafeUser(user);
     }
@@ -267,7 +266,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return -1;
         }
         // 2. 从数据库中删除账户
-        return userMapper.deleteById(id);
+        // todo 前往Mapper自定义sql语句
+        return 0;
     }
 
     /**
@@ -294,4 +294,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         safeUser.setUpdateTime(new Date());
         return safeUser;
     }
+
 }
