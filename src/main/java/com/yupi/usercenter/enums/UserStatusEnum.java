@@ -8,8 +8,8 @@ import lombok.Getter;
 @Getter
 public enum UserStatusEnum {
 
-    NORMAL("正常", 0),
-    BAN("封禁", 1);
+    NORMAL_STATUS("正常", 0),
+    BAN_STATUS("封禁", 1);
 
     private final String status;
 

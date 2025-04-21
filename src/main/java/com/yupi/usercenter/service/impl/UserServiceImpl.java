@@ -149,7 +149,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         // 4. 判断账户是否被封禁
-        if (Objects.equals(user.getUserStatus(), UserStatusEnum.BAN.getValue())) {
+        if (Objects.equals(user.getUserStatus(), UserStatusEnum.BAN_STATUS.getValue())) {
             log.info(ErrorConstant.USER_ALREADY_BAN_MESSAGE);
             return null;
         }
