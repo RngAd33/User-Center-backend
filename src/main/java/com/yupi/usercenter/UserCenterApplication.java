@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * 项目启动类
+ * @url http://localhost:8080/doc.html
  */
 @SpringBootApplication
 @MapperScan("com.yupi.usercenter.mapper")
