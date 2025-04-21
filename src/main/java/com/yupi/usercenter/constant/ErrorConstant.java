@@ -7,7 +7,7 @@ public interface ErrorConstant {
 
     String USER_NOT_EXIST_MESSAGE = "——！用户不存在！——";
 
-    String USER_NAME_ALREADY_EXIST_MESSAGE = "——！用户名已存在！——";
+    String USER_NAME_ALREADY_EXIST_MESSAGE = "——！用户已存在！——";
 
     String PLANET_CODE_ALREADY_EXIST_MESSAGE = "——！编号已存在！——";
 

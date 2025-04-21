@@ -17,16 +17,16 @@ public class MyException extends RuntimeException{
     /**
      * 报错信息
      */
-    private final String message;
+    private final String msg;
 
     /**
      * @param code
-     * @param message
+     * @param msg
      */
-    public MyException(int code, String message) {
-        super(message);
+    public MyException(int code, String msg) {
+        super(msg);
         this.code = code;
-        this.message = message;
+        this.msg = msg;
     }
 
     /**
@@ -34,7 +34,7 @@ public class MyException extends RuntimeException{
      */
     public MyException(ErrorCodeEnum errorCode) {
         this.code = errorCode.getCode();
-        this.message = errorCode.getMessage();
+        this.msg = errorCode.getMessage();
     }
 
 }

@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupi.usercenter.constant.AESConstant;
 import com.yupi.usercenter.constant.ErrorConstant;
+import com.yupi.usercenter.enums.ErrorCodeEnum;
 import com.yupi.usercenter.enums.UserRoleEnum;
 import com.yupi.usercenter.enums.UserStatusEnum;
+import com.yupi.usercenter.exception.MyException;
 import com.yupi.usercenter.mapper.UserMapper;
 import com.yupi.usercenter.model.User;
 import com.yupi.usercenter.service.UserService;
@@ -48,26 +50,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // - 字段不能为空
         if (StringUtils.isAnyBlank(userName, userPassword, checkPassword, planetCode)) {
             log.info(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 长度限制
         if (userName.length() < 3 || userPassword.length() < 8) {
             log.info(ErrorConstant.LENGTH_ERROR_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 账户名称不能包含特殊字符
         if (SpecialCharValidator.doValidate(userName)) {
             log.info(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 密码和确认密码必须一致
         if (!userPassword.equals(checkPassword)) {
             log.info(ErrorConstant.PASSWD_NOT_REPEAT_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 星球编号限制总人数（总人数 = 10 ^ planetCode.length() - 1）
         if (planetCode.length() > 5) {
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
 
         // 2. 账户信息查重
@@ -78,7 +80,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         long count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
             log.info(ErrorConstant.USER_NAME_ALREADY_EXIST_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 编号查重
         queryWrapper = new QueryWrapper<>();
@@ -86,7 +88,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
             log.info(ErrorConstant.PLANET_CODE_ALREADY_EXIST_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
 
         // 3. 密码加密
@@ -94,7 +96,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String encryptedPassword = AESUtils.doEncrypt(userPassword);
         if (encryptedPassword == null) {
             log.info(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
 
         // 4. 向数据库插入数据
@@ -106,7 +108,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         boolean saveResult = this.save(user);
         if (!saveResult) {
             log.info(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
 
         // 5. 返回新账户id
@@ -128,12 +130,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // - 字段不能为空
         if (StringUtils.isAnyBlank(userName, userPassword)) {
             log.info(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 账户名称不能包含特殊字符
         if (SpecialCharValidator.doValidate(userName)) {
             log.info(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
 
         // 2. 密码加密
@@ -146,13 +148,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
             log.info(ErrorConstant.USER_NOT_EXIST_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
 
         // 4. 判断账户是否被封禁
         if (Objects.equals(user.getUserStatus(), UserStatusEnum.BAN_STATUS.getValue())) {
             log.info(ErrorConstant.USER_ALREADY_BAN_MESSAGE);
-            return null;
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
 
         // 5. 信息脱敏
@@ -174,11 +176,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Object userObj = request.getSession().getAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
         User currentUser = (User) userObj;
         if (currentUser == null) {
-            return null;
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         long id = currentUser.getId();
         if (id <= 0) {
-            return null;
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         User user = this.getById(id);
         return getSafeUser(user);
@@ -228,7 +230,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = userMapper.selectById(id);
         if (user == null) {
             log.info(ErrorConstant.USER_NOT_EXIST_MESSAGE);
-            return -1;
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
 
         // 2. 切换用户状态
@@ -240,7 +242,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         int updateResult = userMapper.updateById(user);
         if (updateResult <= 0) {
             log.info(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
-            return -1;
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
 
         // 4. 返回操作结果
