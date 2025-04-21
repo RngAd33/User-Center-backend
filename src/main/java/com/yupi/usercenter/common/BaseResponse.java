@@ -49,7 +49,7 @@ public class BaseResponse<T> implements Serializable {
     }
 
     /**
-     * 返回错误
+     * 返回错误信息
      *
      * @param errorCode
      */
