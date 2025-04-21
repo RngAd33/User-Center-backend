@@ -1,0 +1,31 @@
+package com.yupi.usercenter.exception;
+
+import com.yupi.usercenter.enums.ErrorCodeEnum;
+
+/**
+ * 全局异常处理器
+ */
+public class RunException extends RuntimeException{
+
+    /**
+     * 错误码
+     */
+    private final int code;
+
+    /**
+     * 报错信息
+     */
+    private final String message;
+
+    public RunException(int code, String message) {
+        super(message);
+        this.code = code;
+        this.message = message;
+    }
+
+    public RunException(ErrorCodeEnum errorCode) {
+        this.code = errorCode.getCode();
+        this.message = errorCode.getMessage();
+    }
+
+}
