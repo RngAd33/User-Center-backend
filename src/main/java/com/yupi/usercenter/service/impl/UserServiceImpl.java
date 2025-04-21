@@ -46,6 +46,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Long userRegister(String userName, String userPassword, String checkPassword, String planetCode) throws Exception {
         // 1. 信息校验
+        log.info("正在执行信息校验……");
         // - 字段不能为空
         if (StringUtils.isAnyBlank(userName, userPassword, checkPassword, planetCode)) {
             log.info(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
@@ -72,6 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         // 2. 账户信息查重
+        log.info("正在执行信息查重……");
         // - 名称查重
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userName", userName);
@@ -90,14 +92,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         // 3. 密码加密
+        log.info("正在执行密码加密……");
         String encryptedPassword = AESUtils.doEncrypt(userPassword);
         if (encryptedPassword == null) {
             log.info(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
             return null;
         }
-        log.info("密码已加密>>>");
 
         // 4. 向数据库插入数据
+        log.info("正在写入数据库……");
         User user = new User();
         user.setUserName(userName);
         user.setUserPassword(encryptedPassword);
@@ -107,9 +110,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.info(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
             return null;
         }
-        log.info("数据插入成功，注册完成>>>");
 
         // 5. 返回新账户id
+        log.info("Correct！注册完成>>>");
         return user.getId();
     }
 
