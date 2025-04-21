@@ -12,7 +12,6 @@ import com.yupi.usercenter.service.UserService;
 import com.yupi.usercenter.utils.ResultUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +38,7 @@ public class UserController {
     @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) throws Exception {
         if (userRegisterRequest == null) {
-            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION.getCode(), ErrorCodeEnum.USER_LOSE_ACTION.getMessage());
+            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         String userName = userRegisterRequest.getUserName();
         String userPassword = userRegisterRequest.getUserPassword();
@@ -47,7 +46,7 @@ public class UserController {
         String planetCode = userRegisterRequest.getPlanetCode();
         // 校验参数（倾向于对参数本身的校验，不涉及业务逻辑）
         if (StringUtils.isAnyBlank(userName, userPassword, checkPassword, planetCode)) {
-            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION.getCode(), ErrorCodeEnum.USER_LOSE_ACTION.getMessage());
+            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         Long result = userService.userRegister(userName, userPassword, checkPassword, planetCode);
         return ResultUtils.success(result);
@@ -63,13 +62,13 @@ public class UserController {
     @PostMapping("/login")
     public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) throws Exception {
         if (userLoginRequest == null) {
-            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION.getCode(), ErrorCodeEnum.USER_LOSE_ACTION.getMessage());
+            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         String userName = userLoginRequest.getUserName();
         String userPassword = userLoginRequest.getUserPassword();
         // 校验参数（倾向于对参数本身的校验，不涉及业务逻辑）
         if (StringUtils.isAnyBlank(userName, userPassword)) {
-            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION.getCode(), ErrorCodeEnum.USER_LOSE_ACTION.getMessage());
+            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         User user = userService.userLogin(userName, userPassword, request);
         return ResultUtils.success(user);
@@ -96,7 +95,7 @@ public class UserController {
     @PostMapping("/logout")
     public BaseResponse<Integer> userLogout(HttpServletRequest request) {
         if (request == null) {
-            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION.getCode(), ErrorCodeEnum.USER_LOSE_ACTION.getMessage());
+            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         Integer result = userService.userLogout(request);
         return ResultUtils.success(result);
@@ -112,7 +111,7 @@ public class UserController {
     public BaseResponse<List<User>> searchUsers(String userName, HttpServletRequest request) {
         // 鉴权，仅管理员可操作
         if (isNotAdmin(request)) {
-            return ResultUtils.error(ErrorCodeEnum.USER_NOT_AUTH.getCode(), ErrorCodeEnum.USER_NOT_AUTH.getMessage());
+            return ResultUtils.error(ErrorCodeEnum.USER_NOT_AUTH);
         }
         List<User> users = userService.searchUsers(userName, request);
         return ResultUtils.success(users);
@@ -128,7 +127,7 @@ public class UserController {
     public BaseResponse<Boolean> userDelete(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
         Long id = getId(userManageRequest, request);
         if (id == null) {
-            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION.getCode(), ErrorCodeEnum.USER_LOSE_ACTION.getMessage());
+            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         boolean result = userService.removeById(id);   // 无需业务层
         return ResultUtils.success(result);
@@ -144,7 +143,7 @@ public class UserController {
     public BaseResponse<Integer> userOrBan(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
         Long id = getId(userManageRequest, request);
         if (id == null) {
-            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION.getCode(), ErrorCodeEnum.USER_LOSE_ACTION.getMessage());
+            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         Integer result = userService.userOrBan(id, request);
         return ResultUtils.success(result);
@@ -161,7 +160,7 @@ public class UserController {
     public BaseResponse<Integer> userLogoff(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
         Long id = getId(userManageRequest, request);
         if (id == null) {
-            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION.getCode(), ErrorCodeEnum.USER_LOSE_ACTION.getMessage());
+            return ResultUtils.error(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         Integer result = userService.userLogoff(id, request);
         return ResultUtils.success(result);

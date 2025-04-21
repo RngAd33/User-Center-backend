@@ -47,7 +47,7 @@ public class ResultUtils {
      * @return
      */
     public static BaseResponse error(ErrorCodeEnum errorCode) {
-        return new BaseResponse(errorCode.getCode(), errorCode.getMessage());
+        return new BaseResponse(errorCode.getCode(), null, errorCode.getMessage());
     }
 
 }
