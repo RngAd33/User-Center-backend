@@ -25,16 +25,34 @@ public class BaseResponse<T> implements Serializable {
      */
     private String msg;
 
+    /**
+     * 有消息的返回
+     *
+     * @param code
+     * @param data
+     * @param msg
+     */
     public BaseResponse(int code, T data, String msg) {
         this.code = code;
         this.data = data;
         this.msg = msg;
     }
 
+    /**
+     * 无消息的返回
+     *
+     * @param code
+     * @param data
+     */
     public BaseResponse(int code, T data) {
         this(code, data, "");
     }
 
+    /**
+     * 异常处理
+     *
+     * @param errorCode
+     */
     public BaseResponse(ErrorCodeEnum errorCode) {
         this(errorCode.getCode(), null, errorCode.getMessage());
     }

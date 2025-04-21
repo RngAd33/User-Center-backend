@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorCodeEnum {
 
+    SUCCESS("OK >>>", 0),
     USER_NOT_EXIST_OR_PASSWORD_ERROR_RETRY("——！用户不存在或密码错误，请重试！——", 4042),
     USER_TOO_MANY_TIMES("——！请求超时！——", 5000),
     USER_LOSE_ACTION("————！！操作失败！！————", 4048),
