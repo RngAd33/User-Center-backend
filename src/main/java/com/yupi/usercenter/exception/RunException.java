@@ -1,10 +1,12 @@
 package com.yupi.usercenter.exception;
 
 import com.yupi.usercenter.enums.ErrorCodeEnum;
+import lombok.Getter;
 
 /**
  * 全局异常处理器
  */
+@Getter
 public class RunException extends RuntimeException{
 
     /**
