@@ -4,7 +4,7 @@ import com.yupi.usercenter.common.BaseResponse;
 import com.yupi.usercenter.constant.ErrorConstant;
 import com.yupi.usercenter.enums.ErrorCodeEnum;
 import com.yupi.usercenter.enums.UserRoleEnum;
-import com.yupi.usercenter.exception.RunException;
+import com.yupi.usercenter.exception.MyException;
 import com.yupi.usercenter.model.User;
 import com.yupi.usercenter.model.request.UserLoginRequest;
 import com.yupi.usercenter.model.request.UserManageRequest;
@@ -40,7 +40,7 @@ public class UserController {
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) throws Exception {
         if (userRegisterRequest == null) {
             //  throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
-            throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         String userName = userRegisterRequest.getUserName();
         String userPassword = userRegisterRequest.getUserPassword();
@@ -48,7 +48,7 @@ public class UserController {
         String planetCode = userRegisterRequest.getPlanetCode();
         // 校验参数（倾向于对参数本身的校验，不涉及业务逻辑）
         if (StringUtils.isAnyBlank(userName, userPassword, checkPassword, planetCode)) {
-            throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         Long result = userService.userRegister(userName, userPassword, checkPassword, planetCode);
         return ResultUtils.success(result);
@@ -64,13 +64,13 @@ public class UserController {
     @PostMapping("/login")
     public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) throws Exception {
         if (userLoginRequest == null) {
-            throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         String userName = userLoginRequest.getUserName();
         String userPassword = userLoginRequest.getUserPassword();
         // 校验参数（倾向于对参数本身的校验，不涉及业务逻辑）
         if (StringUtils.isAnyBlank(userName, userPassword)) {
-            throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         User user = userService.userLogin(userName, userPassword, request);
         return ResultUtils.success(user);
@@ -97,7 +97,7 @@ public class UserController {
     @PostMapping("/logout")
     public BaseResponse<Integer> userLogout(HttpServletRequest request) {
         if (request == null) {
-            throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         Integer result = userService.userLogout(request);
         return ResultUtils.success(result);
@@ -114,7 +114,7 @@ public class UserController {
         // 鉴权，仅管理员可操作
         if (isNotAdmin(request)) {
             // return ResultUtils.error(ErrorCodeEnum.USER_NOT_AUTH);
-            throw new RunException(ErrorCodeEnum.USER_NOT_AUTH);
+            throw new MyException(ErrorCodeEnum.USER_NOT_AUTH);
         }
         List<User> users = userService.searchUsers(userName, request);
         return ResultUtils.success(users);
@@ -130,7 +130,7 @@ public class UserController {
     public BaseResponse<Boolean> userDelete(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
         Long id = getId(userManageRequest, request);
         if (id == null) {
-            throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         boolean result = userService.removeById(id);   // 无需业务层
         return ResultUtils.success(result);
@@ -146,7 +146,7 @@ public class UserController {
     public BaseResponse<Integer> userOrBan(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
         Long id = getId(userManageRequest, request);
         if (id == null) {
-            throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         Integer result = userService.userOrBan(id, request);
         return ResultUtils.success(result);
@@ -163,7 +163,7 @@ public class UserController {
     public BaseResponse<Integer> userLogoff(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
         Long id = getId(userManageRequest, request);
         if (id == null) {
-            throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
+            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         Integer result = userService.userLogoff(id, request);
         return ResultUtils.success(result);

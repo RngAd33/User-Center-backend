@@ -7,7 +7,7 @@ import lombok.Getter;
  * 全局异常处理器
  */
 @Getter
-public class RunException extends RuntimeException{
+public class MyException extends RuntimeException{
 
     /**
      * 错误码
@@ -23,7 +23,7 @@ public class RunException extends RuntimeException{
      * @param code
      * @param message
      */
-    public RunException(int code, String message) {
+    public MyException(int code, String message) {
         super(message);
         this.code = code;
         this.message = message;
@@ -32,7 +32,7 @@ public class RunException extends RuntimeException{
     /**
      * @param errorCode
      */
-    public RunException(ErrorCodeEnum errorCode) {
+    public MyException(ErrorCodeEnum errorCode) {
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
     }
