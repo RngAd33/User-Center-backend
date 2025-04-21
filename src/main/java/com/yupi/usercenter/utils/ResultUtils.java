@@ -12,7 +12,7 @@ public class ResultUtils {
      * 成功
      *
      * @param data 数据
-     * @param <T> 数据类型
+     * @param <T> 泛型
      * @return
      */
     public static <T> BaseResponse<T> success(T data) {
@@ -22,8 +22,8 @@ public class ResultUtils {
     /**
      * 失败
      *
-     * @param code 状态码
-     * @param message 信息
+     * @param code 自传状态码
+     * @param message 自传信息
      * @return
      */
     public static BaseResponse error(int code, String message) {
@@ -33,7 +33,8 @@ public class ResultUtils {
     /**
      * 失败
      *
-     * @param errorCode 错误码
+     * @param errorCode 错误码枚举
+     * @param message 自传消息
      * @return
      */
     public static BaseResponse error(ErrorCodeEnum errorCode, String message) {
@@ -43,7 +44,7 @@ public class ResultUtils {
     /**
      * 失败
      *
-     * @param errorCode 错误码
+     * @param errorCode 错误码枚举
      * @return
      */
     public static BaseResponse error(ErrorCodeEnum errorCode) {
