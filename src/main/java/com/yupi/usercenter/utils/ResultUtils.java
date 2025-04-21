@@ -23,22 +23,22 @@ public class ResultUtils {
      * 失败
      *
      * @param code 自传状态码
-     * @param message 自传信息
+     * @param msg 自传信息
      * @return
      */
-    public static BaseResponse error(int code, String message) {
-        return new BaseResponse(code, null, message);
+    public static BaseResponse error(int code, String msg) {
+        return new BaseResponse(code, null, msg);
     }
 
     /**
      * 失败
      *
      * @param errorCode 错误码枚举
-     * @param message 自传消息
+     * @param msg 自传消息
      * @return
      */
-    public static BaseResponse error(ErrorCodeEnum errorCode, String message) {
-        return new BaseResponse(errorCode.getCode(), null, message);
+    public static BaseResponse error(ErrorCodeEnum errorCode, String msg) {
+        return new BaseResponse(errorCode.getCode(), null, msg);
     }
 
     /**
@@ -48,7 +48,7 @@ public class ResultUtils {
      * @return
      */
     public static BaseResponse error(ErrorCodeEnum errorCode) {
-        return new BaseResponse(errorCode.getCode(), null, errorCode.getMessage());
+        return new BaseResponse(errorCode.getCode(), null, errorCode.getMsg());
     }
 
 }
