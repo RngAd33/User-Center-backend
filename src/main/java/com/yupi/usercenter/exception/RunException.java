@@ -19,12 +19,19 @@ public class RunException extends RuntimeException{
      */
     private final String message;
 
+    /**
+     * @param code
+     * @param message
+     */
     public RunException(int code, String message) {
         super(message);
         this.code = code;
         this.message = message;
     }
 
+    /**
+     * @param errorCode
+     */
     public RunException(ErrorCodeEnum errorCode) {
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
