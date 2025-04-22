@@ -269,7 +269,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return -1;
         }
         // 2. 从数据库中删除账户
-        // todo 前往Mapper自定义sql语句
+        // todo 前往Mapper自定义sql语句，或者合并到删除板块
         return 0;
     }
 
