@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MyException.class)
     public BaseResponse myExceptionHandler(MyException e) {
-        return ResultUtils.error();
+        return ResultUtils.error(e.getCode(), e.getMsg());
     }
 
     /**
