@@ -19,23 +19,22 @@ public class MyException extends RuntimeException {
      */
     private final String msg;
 
+
     /**
-     * @param code
      * @param msg
+     * @param code
      */
-    public MyException(int code, String msg) {
-        super(msg);
-        this.code = code;
+    public MyException(String msg, int code) {
         this.msg = msg;
+        this.code = code;
     }
 
     /**
      * @param errorCode
      */
     public MyException(ErrorCodeEnum errorCode) {
-        super(errorCode.getMsg());
-        this.code = errorCode.getCode();
         this.msg = errorCode.getMsg();
+        this.code = errorCode.getCode();
     }
 
 }
