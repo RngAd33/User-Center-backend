@@ -49,22 +49,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         log.info("正在执行信息校验……");
         // - 字段不能为空
         if (StringUtils.isAnyBlank(userName, userPassword, checkPassword, planetCode)) {
-            log.info(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
+            log.error(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 长度限制
         if (userName.length() < 3 || userPassword.length() < 8) {
-            log.info(ErrorConstant.LENGTH_ERROR_MESSAGE);
+            log.error(ErrorConstant.LENGTH_ERROR_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 账户名称不能包含特殊字符
         if (SpecialCharValidator.doValidate(userName)) {
-            log.info(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);
+            log.error(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 密码和确认密码必须一致
         if (!userPassword.equals(checkPassword)) {
-            log.info(ErrorConstant.PASSWD_NOT_REPEAT_MESSAGE);
+            log.error(ErrorConstant.PASSWD_NOT_REPEAT_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 星球编号限制总人数（总人数 = 10 ^ planetCode.length() - 1）
@@ -79,7 +79,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq("userName", userName);
         long count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
-            log.info(ErrorConstant.USER_NAME_ALREADY_EXIST_MESSAGE);
+            log.error(ErrorConstant.USER_NAME_ALREADY_EXIST_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 编号查重
@@ -87,7 +87,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq("planetCode", planetCode);
         count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
-            log.info(ErrorConstant.PLANET_CODE_ALREADY_EXIST_MESSAGE);
+            log.error(ErrorConstant.PLANET_CODE_ALREADY_EXIST_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
 
@@ -95,7 +95,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         log.info("正在执行密码加密……");
         String encryptedPassword = AESUtils.doEncrypt(userPassword);
         if (encryptedPassword == null) {
-            log.info(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
+            log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
 
@@ -107,7 +107,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setPlanetCode(planetCode);
         boolean saveResult = this.save(user);
         if (!saveResult) {
-            log.info(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
+            log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
 
@@ -129,12 +129,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 1. 信息校验
         // - 字段不能为空
         if (StringUtils.isAnyBlank(userName, userPassword)) {
-            log.info(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
+            log.error(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
         // - 账户名称不能包含特殊字符
         if (SpecialCharValidator.doValidate(userName)) {
-            log.info(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);
+            log.error(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
 
@@ -147,13 +147,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq("userPassword", encryptedPassword);
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
-            log.info(ErrorConstant.USER_NOT_EXIST_MESSAGE);
+            log.error(ErrorConstant.USER_NOT_EXIST_MESSAGE);
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
 
         // 4. 判断账户是否被封禁
         if (Objects.equals(user.getUserStatus(), UserStatusEnum.BAN_STATUS.getValue())) {
-            log.info(ErrorConstant.USER_ALREADY_BAN_MESSAGE);
+            log.error(ErrorConstant.USER_ALREADY_BAN_MESSAGE);
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
 
@@ -229,7 +229,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 1. 查询用户是否存在
         User user = userMapper.selectById(id);
         if (user == null) {
-            log.info(ErrorConstant.USER_NOT_EXIST_MESSAGE);
+            log.error(ErrorConstant.USER_NOT_EXIST_MESSAGE);
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
 
@@ -241,7 +241,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 3. 更新数据库
         int updateResult = userMapper.updateById(user);
         if (updateResult <= 0) {
-            log.info(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
+            log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
 
@@ -265,7 +265,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 1. 查询用户是否存在
         User user = userMapper.selectById(id);
         if (user == null) {
-            log.info(ErrorConstant.USER_NOT_EXIST_MESSAGE);
+            log.error(ErrorConstant.USER_NOT_EXIST_MESSAGE);
             return -1;
         }
         // 2. 从数据库中删除账户
