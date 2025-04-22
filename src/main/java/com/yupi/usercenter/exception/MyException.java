@@ -33,6 +33,7 @@ public class MyException extends RuntimeException {
      * @param errorCode
      */
     public MyException(ErrorCodeEnum errorCode) {
+        super(errorCode.getMsg());
         this.code = errorCode.getCode();
         this.msg = errorCode.getMsg();
     }
