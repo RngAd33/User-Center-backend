@@ -112,7 +112,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         // 5. 返回新账户id
-        log.info("Correct！注册完成>>>");
+        log.info("Correct! Successfully to register>>>");
         return user.getId();
     }
 
