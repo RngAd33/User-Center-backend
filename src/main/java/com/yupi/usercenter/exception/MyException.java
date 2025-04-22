@@ -4,7 +4,7 @@ import com.yupi.usercenter.enums.ErrorCodeEnum;
 import lombok.Getter;
 
 /**
- * 全局异常处理器
+ * 自定义异常类
  */
 @Getter
 public class MyException extends RuntimeException {
