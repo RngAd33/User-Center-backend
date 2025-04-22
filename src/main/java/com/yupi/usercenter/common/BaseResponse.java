@@ -54,6 +54,6 @@ public class BaseResponse<T> implements Serializable {
      * @param errorCode
      */
     public BaseResponse(ErrorCodeEnum errorCode) {
-        this(errorCode.getCode(), null, errorCode.getMessage());
+        this(errorCode.getCode(), null, errorCode.getMsg());
     }
 }
