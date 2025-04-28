@@ -72,48 +72,51 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new MyException(ErrorCodeEnum.PARAM_ERROR);
         }
 
-        // 2. 账户信息查重
-        log.info("正在执行信息查重……");
-        // - 名称查重
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userName", userName);
-        long count = userMapper.selectCount(queryWrapper);
-        if (count > 0) {
-            log.error(ErrorConstant.USER_NAME_ALREADY_EXIST_MESSAGE);
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
-        }
-        // - 编号查重
-        queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("planetCode", planetCode);
-        count = userMapper.selectCount(queryWrapper);
-        if (count > 0) {
-            log.error(ErrorConstant.PLANET_CODE_ALREADY_EXIST_MESSAGE);
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
-        }
+        // 单机锁
+        synchronized (userName.intern()) {
+            // 2. 账户信息查重
+            log.info("正在执行信息查重……");
+            // - 名称查重
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("userName", userName);
+            long count = userMapper.selectCount(queryWrapper);
+            if (count > 0) {
+                log.error(ErrorConstant.USER_NAME_ALREADY_EXIST_MESSAGE);
+                throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+            }
+            // - 编号查重
+            queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("planetCode", planetCode);
+            count = userMapper.selectCount(queryWrapper);
+            if (count > 0) {
+                log.error(ErrorConstant.PLANET_CODE_ALREADY_EXIST_MESSAGE);
+                throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+            }
 
-        // 3. 密码加密
-        log.info("正在执行密码加密……");
-        String encryptedPassword = AESUtils.doEncrypt(userPassword);
-        if (encryptedPassword == null) {
-            log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
-        }
+            // 3. 密码加密
+            log.info("正在执行密码加密……");
+            String encryptedPassword = AESUtils.doEncrypt(userPassword);
+            if (encryptedPassword == null) {
+                log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
+                throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+            }
 
-        // 4. 向数据库插入数据
-        log.info("正在载入数据库……");
-        User user = new User();
-        user.setUserName(userName);
-        user.setUserPassword(encryptedPassword);
-        user.setPlanetCode(planetCode);
-        boolean saveResult = this.save(user);
-        if (!saveResult) {
-            log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
-        }
+            // 4. 向数据库插入数据
+            log.info("正在载入数据库……");
+            User user = new User();
+            user.setUserName(userName);
+            user.setUserPassword(encryptedPassword);
+            user.setPlanetCode(planetCode);
+            boolean saveResult = this.save(user);
+            if (!saveResult) {
+                log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
+                throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+            }
 
-        // 5. 返回新账户id
-        log.info("Correct! Successfully to register>>>");
-        return user.getId();
+            // 5. 返回新账户id
+            log.info("Correct! Successfully to register>>>");
+            return user.getId();
+        }
     }
 
     /**
