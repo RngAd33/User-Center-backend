@@ -1,5 +1,5 @@
 # Docker 镜像构建
-FROM maven:3.9.9-jdk-8 AS builder
+FROM maven:3.9.9-jdk-21 AS builder
 
 # Copy local code to the container image.
 WORKDIR /app
