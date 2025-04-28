@@ -3,8 +3,8 @@ spring:
     active: dev
   application:
     name: user-center
+  # 数据库配置
   datasource:
-    # 本地数据库配置
     driver-class-name: ${sky.datasource.driver-class-name}
     url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}
     username: ${sky.datasource.username}
@@ -12,6 +12,7 @@ spring:
   session:
     timeout: ${sky.jwt.admin-ttl}
 
+# 服务端口
 server:
   port: 8080
 
