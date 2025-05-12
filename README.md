@@ -13,6 +13,7 @@
 ### Spring Boot 后端框架
 ### MyBatis + MyBatis Plus 框架
 ### JUnit 单元测试框架
+### Swagger + Knife4j 接口文档
 
 ### Q：使用这个项目有什么注意事项？
 ### A：该项目采用的是jdk21，如果您的java版本低于jdk21，可能会导致项目运行失败
