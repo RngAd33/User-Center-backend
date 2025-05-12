@@ -5,12 +5,14 @@ import com.yupi.usercenter.enums.UserRoleEnum;
 import com.yupi.usercenter.model.User;
 import com.yupi.usercenter.model.request.UserManageRequest;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 /**
  * 通用用户操作
  */
+@Service
 public class UserManager {
 
     /**
