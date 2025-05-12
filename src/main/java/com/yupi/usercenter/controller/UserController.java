@@ -1,10 +1,9 @@
 package com.yupi.usercenter.controller;
 
 import com.yupi.usercenter.common.BaseResponse;
-import com.yupi.usercenter.constant.ErrorConstant;
 import com.yupi.usercenter.enums.ErrorCodeEnum;
-import com.yupi.usercenter.enums.UserRoleEnum;
 import com.yupi.usercenter.exception.MyException;
+import com.yupi.usercenter.manager.UserManager;
 import com.yupi.usercenter.model.User;
 import com.yupi.usercenter.model.request.UserLoginRequest;
 import com.yupi.usercenter.model.request.UserManageRequest;
@@ -14,7 +13,6 @@ import com.yupi.usercenter.utils.ResultUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +26,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private UserManager userManager;
 
     /**
      * 用户注册
@@ -112,7 +113,7 @@ public class UserController {
     @GetMapping("/admin/search")
     public BaseResponse<List<User>> searchUsers(String userName, HttpServletRequest request) {
         // 鉴权，仅管理员可操作
-        if (isNotAdmin(request)) {
+        if (userManager.isNotAdmin(request)) {
             // return ResultUtils.error(ErrorCodeEnum.USER_NOT_AUTH);
             throw new MyException(ErrorCodeEnum.USER_NOT_AUTH);
         }
@@ -128,7 +129,7 @@ public class UserController {
      */
     @PostMapping("/admin/delete")
     public BaseResponse<Boolean> userDelete(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
-        Long id = getId(userManageRequest, request);
+        Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
@@ -144,7 +145,7 @@ public class UserController {
      */
     @PostMapping("/admin/ban")
     public BaseResponse<Integer> userOrBan(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
-        Long id = getId(userManageRequest, request);
+        Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
@@ -161,43 +162,12 @@ public class UserController {
     @Transactional
     @PostMapping("/admin/logoff")
     public BaseResponse<Integer> userLogoff(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
-        Long id = getId(userManageRequest, request);
+        Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         Integer result = userService.userLogoff(id, request);
         return ResultUtils.success(result);
-    }
-
-    /**
-     * 鉴权（反向）
-     *
-     * @param request http请求
-     * @return 是否（TF）为管理员
-     */
-    private static boolean isNotAdmin(HttpServletRequest request) {
-        Object userObj = request.getSession().getAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
-        User user = (User) userObj;
-        if (user == null || !Objects.equals(user.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
-            System.out.println(ErrorConstant.USER_NOT_AUTH_MESSAGE);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * id传递
-     *
-     * @param userManageRequest 用户管理请求体
-     * @param request 用户登录态
-     * @return id
-     */
-    private static Long getId(UserManageRequest userManageRequest, HttpServletRequest request) {
-        if (isNotAdmin(request)) return null;   // 鉴权，仅管理员可操作
-        if (userManageRequest == null) return null;   // 验证请求体
-        Long id = userManageRequest.getId();
-        if (id <= 0) return null;
-        return id;
     }
 
 }
