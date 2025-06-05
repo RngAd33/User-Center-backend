@@ -47,11 +47,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Long userRegister(String userName, String userPassword, String checkPassword, String planetCode) throws Exception {
         // 1. 信息校验
         log.info("正在执行信息校验……");
-        // - 字段不能为空
-        if (StringUtils.isAnyBlank(userName, userPassword, checkPassword, planetCode)) {
-            log.error(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
-        }
         // - 长度限制
         if (userName.length() < 3 || userPassword.length() < 8) {
             log.error(ErrorConstant.LENGTH_ERROR_MESSAGE);
