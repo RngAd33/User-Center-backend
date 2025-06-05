@@ -69,7 +69,7 @@ public class UserController {
         }
         String userName = userLoginRequest.getUserName();
         String userPassword = userLoginRequest.getUserPassword();
-        // 校验参数（倾向于对参数本身的校验，不涉及业务逻辑）
+        // 校验参数
         if (StringUtils.isAnyBlank(userName, userPassword)) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }

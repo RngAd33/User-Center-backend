@@ -240,9 +240,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         // 4. 返回操作结果
         if (newStatus != 0) {
-            log.info("用户已封禁");
+            log.info("用户已封禁>>>");
         } else {
-            log.info("用户已解封");
+            log.info("用户已解封>>>");
         }
         return 0;
     }
