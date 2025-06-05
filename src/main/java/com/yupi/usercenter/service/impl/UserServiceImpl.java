@@ -130,11 +130,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User userLogin(String userName, String userPassword, HttpServletRequest request) throws Exception {
         // 1. 信息校验
-        // - 字段不能为空
-        if (StringUtils.isAnyBlank(userName, userPassword)) {
-            log.error(ErrorConstant.USER_HAVE_NULL_CHAR_MESSAGE);
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
-        }
         // - 账户名称不能包含特殊字符
         if (SpecialCharValidator.doValidate(userName)) {
             log.error(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);

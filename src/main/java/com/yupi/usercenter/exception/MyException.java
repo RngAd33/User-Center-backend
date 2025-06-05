@@ -57,7 +57,7 @@ public class MyException extends RuntimeException {
     public MyException(ErrorCodeEnum errorCode) {
         this.msg = errorCode.getMsg();
         this.code = errorCode.getCode();
-        this.des = null;
+        this.des = "";
     }
 
 }
