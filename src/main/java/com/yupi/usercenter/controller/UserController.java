@@ -38,7 +38,8 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping("/register")
-    public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) throws Exception {
+    public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest)
+            throws Exception {
         if (userRegisterRequest == null) {
             //  throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
@@ -63,7 +64,8 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping("/login")
-    public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) throws Exception {
+    public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest,
+                                        HttpServletRequest request) throws Exception {
         if (userLoginRequest == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
@@ -128,7 +130,8 @@ public class UserController {
      * @return 删除成功与否
      */
     @PostMapping("/admin/delete")
-    public BaseResponse<Boolean> userDelete(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
+    public BaseResponse<Boolean> userDelete(@RequestBody UserManageRequest userManageRequest,
+                                            HttpServletRequest request) {
         Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
@@ -144,7 +147,8 @@ public class UserController {
      * @return 操作后用户状态
      */
     @PostMapping("/admin/ban")
-    public BaseResponse<Integer> userOrBan(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
+    public BaseResponse<Integer> userOrBan(@RequestBody UserManageRequest userManageRequest,
+                                           HttpServletRequest request) {
         Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
@@ -161,7 +165,8 @@ public class UserController {
      */
     @Transactional
     @PostMapping("/admin/logoff")
-    public BaseResponse<Integer> userLogoff(@RequestBody UserManageRequest userManageRequest, HttpServletRequest request) {
+    public BaseResponse<Integer> userLogoff(@RequestBody UserManageRequest userManageRequest,
+                                            HttpServletRequest request) {
         Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
