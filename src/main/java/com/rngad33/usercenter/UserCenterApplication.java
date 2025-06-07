@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @url http://localhost:8080/doc.html
  */
 @SpringBootApplication
-@MapperScan("com.yupi.usercenter.mapper")
+@MapperScan("com.rngad33.usercenter.mapper")
 public class UserCenterApplication {
 
     public static void main(String[] args) {
