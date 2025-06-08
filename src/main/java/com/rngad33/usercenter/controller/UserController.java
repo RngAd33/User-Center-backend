@@ -12,10 +12,11 @@ import com.rngad33.usercenter.service.UserService;
 import com.rngad33.usercenter.utils.ResultUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 用户接口
@@ -124,23 +125,6 @@ public class UserController {
     }
 
     /**
-     * 用户删除（仅管理员，逻辑删除）
-     *
-     * @param userManageRequest 用户管理请求体
-     * @return 删除成功与否
-     */
-    @PostMapping("/admin/delete")
-    public BaseResponse<Boolean> userDelete(@RequestBody UserManageRequest userManageRequest,
-                                            HttpServletRequest request) {
-        Long id = userManager.getId(userManageRequest, request);
-        if (id == null) {
-            throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
-        }
-        boolean result = userService.removeById(id);   // 无需业务层
-        return ResultUtils.success(result);
-    }
-
-    /**
      * 用户封禁 / 解封（仅管理员）
      *
      * @param userManageRequest 用户管理请求体
@@ -158,20 +142,19 @@ public class UserController {
     }
 
     /**
-     * 用户注销（暂时仅管理员）
+     * 用户删除（仅管理员，逻辑删除）
      *
      * @param userManageRequest 用户管理请求体
-     * @return 状态码
+     * @return 删除成功与否
      */
-    @Transactional
-    @PostMapping("/admin/logoff")
-    public BaseResponse<Integer> userLogoff(@RequestBody UserManageRequest userManageRequest,
+    @PostMapping("/admin/delete")
+    public BaseResponse<Boolean> userDelete(@RequestBody UserManageRequest userManageRequest,
                                             HttpServletRequest request) {
         Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
-        Integer result = userService.userLogoff(id, request);
+        boolean result = userService.removeById(id);   // 无需业务层
         return ResultUtils.success(result);
     }
 
