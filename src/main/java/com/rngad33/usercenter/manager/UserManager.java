@@ -1,9 +1,9 @@
 package com.rngad33.usercenter.manager;
 
 import com.rngad33.usercenter.constant.ErrorConstant;
-import com.rngad33.usercenter.enums.UserRoleEnum;
+import com.rngad33.usercenter.model.enums.UserRoleEnum;
 import com.rngad33.usercenter.model.request.UserManageRequest;
-import com.rngad33.usercenter.model.User;
+import com.rngad33.usercenter.model.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 

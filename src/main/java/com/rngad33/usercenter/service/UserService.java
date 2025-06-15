@@ -1,6 +1,6 @@
 package com.rngad33.usercenter.service;
 
-import com.rngad33.usercenter.model.User;
+import com.rngad33.usercenter.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;

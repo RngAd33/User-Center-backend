@@ -1,7 +1,8 @@
-package com.rngad33.usercenter.model;
+package com.rngad33.usercenter.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 

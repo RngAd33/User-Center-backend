@@ -1,6 +1,6 @@
 package com.rngad33.usercenter.common;
 
-import com.rngad33.usercenter.enums.ErrorCodeEnum;
+import com.rngad33.usercenter.model.enums.ErrorCodeEnum;
 import java.io.Serializable;
 import lombok.Data;
 

@@ -1,6 +1,6 @@
 package com.rngad33.usercenter.utils;
 
-import com.rngad33.usercenter.enums.SpecialCharEnum;
+import com.rngad33.usercenter.model.enums.SpecialCharEnum;
 
 /**
  * 特殊字符校验

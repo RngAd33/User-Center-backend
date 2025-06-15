@@ -2,9 +2,9 @@ package com.rngad33.usercenter.controller;
 
 import com.rngad33.usercenter.exception.MyException;
 import com.rngad33.usercenter.common.BaseResponse;
-import com.rngad33.usercenter.enums.ErrorCodeEnum;
+import com.rngad33.usercenter.model.enums.ErrorCodeEnum;
 import com.rngad33.usercenter.manager.UserManager;
-import com.rngad33.usercenter.model.User;
+import com.rngad33.usercenter.model.entity.User;
 import com.rngad33.usercenter.model.request.UserLoginRequest;
 import com.rngad33.usercenter.model.request.UserManageRequest;
 import com.rngad33.usercenter.model.request.UserRegisterRequest;

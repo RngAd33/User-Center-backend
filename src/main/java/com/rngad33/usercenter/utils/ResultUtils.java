@@ -1,7 +1,7 @@
 package com.rngad33.usercenter.utils;
 
 import com.rngad33.usercenter.common.BaseResponse;
-import com.rngad33.usercenter.enums.ErrorCodeEnum;
+import com.rngad33.usercenter.model.enums.ErrorCodeEnum;
 
 /**
  * 返回工具类

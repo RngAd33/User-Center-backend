@@ -1,6 +1,6 @@
 package com.rngad33.usercenter.exception;
 
-import com.rngad33.usercenter.enums.ErrorCodeEnum;
+import com.rngad33.usercenter.model.enums.ErrorCodeEnum;
 import lombok.Getter;
 
 /**
