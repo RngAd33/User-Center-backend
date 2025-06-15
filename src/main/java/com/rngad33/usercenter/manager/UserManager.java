@@ -21,6 +21,22 @@ public class UserManager {
      * @param request http请求
      * @return 是否（TF）为管理员
      */
+    public boolean isAdmin(HttpServletRequest request) {
+        Object userObj = request.getSession().getAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
+        User user = (User) userObj;
+        if (user == null || !Objects.equals(user.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
+            System.out.println(ErrorConstant.USER_NOT_AUTH_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 鉴权（反向）
+     *
+     * @param request http请求
+     * @return 是否（TF）为管理员
+     */
     public boolean isNotAdmin(HttpServletRequest request) {
         Object userObj = request.getSession().getAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
         User user = (User) userObj;
@@ -45,4 +61,5 @@ public class UserManager {
         if (id <= 0) return null;
         return id;
     }
+
 }
