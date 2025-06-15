@@ -1,6 +1,7 @@
 package com.rngad33.usercenter.manager;
 
 import com.rngad33.usercenter.constant.ErrorConstant;
+import com.rngad33.usercenter.constant.UserConstant;
 import com.rngad33.usercenter.model.enums.UserRoleEnum;
 import com.rngad33.usercenter.model.request.UserManageRequest;
 import com.rngad33.usercenter.model.entity.User;
@@ -22,7 +23,7 @@ public class UserManager {
      * @return 是否（TF）为管理员
      */
     public boolean isAdmin(HttpServletRequest request) {
-        Object userObj = request.getSession().getAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
+        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
         User user = (User) userObj;
         if (user == null || !Objects.equals(user.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
             System.out.println(ErrorConstant.USER_NOT_AUTH_MESSAGE);
@@ -52,7 +53,7 @@ public class UserManager {
      * @return 是否（TF）为管理员
      */
     public boolean isNotAdmin(HttpServletRequest request) {
-        Object userObj = request.getSession().getAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
+        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
         User user = (User) userObj;
         if (user == null || !Objects.equals(user.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
             System.out.println(ErrorConstant.USER_NOT_AUTH_MESSAGE);
