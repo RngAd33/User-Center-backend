@@ -16,7 +16,7 @@ import java.util.Objects;
 public class UserManager {
 
     /**
-     * 鉴权（反向）
+     * 正向鉴权（面向请求）
      *
      * @param request http请求
      * @return 是否（TF）为管理员
@@ -32,7 +32,21 @@ public class UserManager {
     }
 
     /**
-     * 鉴权（反向）
+     * 正向鉴权（面向用户）
+     *
+     * @param user 用户
+     * @return 是否（TF）为管理员
+     */
+    public boolean isAdmin(User user) {
+        if (user == null || !Objects.equals(user.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
+            System.out.println(ErrorConstant.USER_NOT_AUTH_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 反向鉴权（面向请求）
      *
      * @param request http请求
      * @return 是否（TF）为管理员
@@ -40,6 +54,20 @@ public class UserManager {
     public boolean isNotAdmin(HttpServletRequest request) {
         Object userObj = request.getSession().getAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
         User user = (User) userObj;
+        if (user == null || !Objects.equals(user.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
+            System.out.println(ErrorConstant.USER_NOT_AUTH_MESSAGE);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 反向鉴权（面向用户）
+     *
+     * @param user 用户
+     * @return 是否（TF）为管理员
+     */
+    public boolean isNotAdmin(User user) {
         if (user == null || !Objects.equals(user.getRole(), UserRoleEnum.ADMIN_ROLE.getCode())) {
             System.out.println(ErrorConstant.USER_NOT_AUTH_MESSAGE);
             return true;
