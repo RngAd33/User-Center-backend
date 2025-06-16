@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngad33.usercenter.constant.AESConstant;
 import com.rngad33.usercenter.constant.ErrorConstant;
+import com.rngad33.usercenter.constant.UserConstant;
 import com.rngad33.usercenter.exception.MyException;
 import com.rngad33.usercenter.utils.AESUtils;
 import com.rngad33.usercenter.utils.SpecialCharValidator;
@@ -156,7 +157,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User safeUser = getSafeUser(user);
 
         // 6. 记录用户登录态（已脱敏）
-        request.getSession().setAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey(), safeUser);
+        request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, safeUser);
         return safeUser;
     }
 
@@ -168,7 +169,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public User getCurrentUser(HttpServletRequest request) {
-        Object userObj = request.getSession().getAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
+        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
         User currentUser = (User) userObj;
         if (currentUser == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
@@ -190,7 +191,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Integer userLogout(HttpServletRequest request) {
         // 移除登录态
-        request.getSession().removeAttribute(UserRoleEnum.USER_LOGIN_STATE.getKey());
+        request.getSession().removeAttribute(UserConstant.USER_LOGIN_STATE);
         return 0;
     }
 
