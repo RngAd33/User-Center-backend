@@ -132,6 +132,10 @@ public class UserController {
     @PostMapping("/admin/ban")
     public BaseResponse<Integer> userOrBan(@RequestBody UserManageRequest userManageRequest,
                                            HttpServletRequest request) {
+        // 鉴权，仅管理员可操作
+        if (userManager.isNotAdmin(request)) {
+            throw new MyException(ErrorCodeEnum.USER_NOT_AUTH);
+        }
         Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
@@ -149,6 +153,10 @@ public class UserController {
     @PostMapping("/admin/delete")
     public BaseResponse<Boolean> userDelete(@RequestBody UserManageRequest userManageRequest,
                                             HttpServletRequest request) {
+        // 鉴权，仅管理员可操作
+        if (userManager.isNotAdmin(request)) {
+            throw new MyException(ErrorCodeEnum.USER_NOT_AUTH);
+        }
         Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
