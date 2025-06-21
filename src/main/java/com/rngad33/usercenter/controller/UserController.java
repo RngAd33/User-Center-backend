@@ -107,18 +107,13 @@ public class UserController {
     }
 
     /**
-     * 用户查询（仅管理员）
+     * 用户模糊查询
      *
      * @param userName 用户名
      * @return 用户列表
      */
     @GetMapping("/admin/search")
     public BaseResponse<List<User>> searchUsers(String userName, HttpServletRequest request) {
-        // 鉴权，仅管理员可操作
-        if (userManager.isNotAdmin(request)) {
-            // return ResultUtils.error(ErrorCodeEnum.USER_NOT_AUTH);
-            throw new MyException(ErrorCodeEnum.USER_NOT_AUTH);
-        }
         List<User> users = userService.searchUsers(userName, request);
         return ResultUtils.success(users);
     }
