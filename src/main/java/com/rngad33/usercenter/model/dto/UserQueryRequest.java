@@ -1,12 +1,16 @@
 package com.rngad33.usercenter.model.dto;
 
 import com.rngad33.usercenter.common.PageRequest;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
 /**
  * 用户查询请求体
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class UserQueryRequest extends PageRequest implements Serializable {
 
     /**
@@ -44,6 +48,6 @@ public class UserQueryRequest extends PageRequest implements Serializable {
      */
     private Integer userStatus;
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3191241716373120793L;
 
 }

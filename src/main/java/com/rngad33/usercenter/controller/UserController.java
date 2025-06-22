@@ -1,7 +1,10 @@
 package com.rngad33.usercenter.controller;
 
+import com.rngad33.usercenter.annotation.AuthCheck;
+import com.rngad33.usercenter.constant.UserConstant;
 import com.rngad33.usercenter.exception.MyException;
 import com.rngad33.usercenter.common.BaseResponse;
+import com.rngad33.usercenter.model.dto.UserUpdateRequest;
 import com.rngad33.usercenter.model.enums.ErrorCodeEnum;
 import com.rngad33.usercenter.manager.UserManager;
 import com.rngad33.usercenter.model.entity.User;
@@ -15,6 +18,7 @@ import com.rngad33.usercenter.utils.ThrowUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -113,7 +117,7 @@ public class UserController {
      * @param userName 用户名
      * @return 用户列表
      */
-    @GetMapping("/admin/search")
+    @GetMapping("/search")
     public BaseResponse<List<User>> searchUsers(String userName, HttpServletRequest request) {
         List<User> users = userService.searchUsers(userName, request);
         return ResultUtils.success(users);
@@ -122,6 +126,7 @@ public class UserController {
     /**
      * 根据id获取用户（管理员）
      */
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @GetMapping("/get")
     public BaseResponse<User> getUserById(long id) {
         ThrowUtils.throwIf(id <= 0, ErrorCodeEnum.PARAMS_ERROR);
@@ -146,13 +151,10 @@ public class UserController {
      * @param userManageRequest 用户管理请求体
      * @return 操作后用户状态
      */
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @PostMapping("/admin/ban")
     public BaseResponse<Integer> userOrBan(@RequestBody UserManageRequest userManageRequest,
                                            HttpServletRequest request) {
-        // 鉴权，仅管理员可操作
-        if (userManager.isNotAdmin(request)) {
-            throw new MyException(ErrorCodeEnum.USER_NOT_AUTH);
-        }
         Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
@@ -167,19 +169,35 @@ public class UserController {
      * @param userManageRequest 用户管理请求体
      * @return 删除成功与否
      */
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @PostMapping("/admin/delete")
     public BaseResponse<Boolean> userDelete(@RequestBody UserManageRequest userManageRequest,
                                             HttpServletRequest request) {
-        // 鉴权，仅管理员可操作
-        if (userManager.isNotAdmin(request)) {
-            throw new MyException(ErrorCodeEnum.USER_NOT_AUTH);
-        }
         Long id = userManager.getId(userManageRequest, request);
         if (id == null) {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         boolean result = userService.removeById(id);   // 无需业务层
         return ResultUtils.success(result);
+    }
+
+    /**
+     * 用户更新（仅管理员）
+     *
+     * @param userUpdateRequest
+     * @return
+     */
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    @PostMapping("/admin/update")
+    public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
+        if (userUpdateRequest == null || userUpdateRequest.getId() == null) {
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
+        }
+        User user = new User();
+        BeanUtils.copyProperties(userUpdateRequest, user);
+        boolean result = userService.updateById(user);
+        ThrowUtils.throwIf(!result, ErrorCodeEnum.USER_LOSE_ACTION);
+        return ResultUtils.success(true);
     }
 
 }

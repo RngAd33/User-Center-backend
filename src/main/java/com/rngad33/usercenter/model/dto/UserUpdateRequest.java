@@ -1,22 +1,19 @@
 package com.rngad33.usercenter.model.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 用户更新请求体
  */
-public class UserUpdateRequest {
+@Data
+public class UserUpdateRequest implements Serializable {
 
     /**
-     * 用户 id（主要服务于Mapper）
-     * 当前策略为主键自增
+     * 用户 id
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -70,21 +67,10 @@ public class UserUpdateRequest {
     private Integer userStatus;
 
     /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
      * 更新时间
      */
     private Date updateTime;
 
-    /**
-     * 是否删除？ 0-未删，1-已删
-     */
-    @TableLogic
-    private Integer isDelete;
-
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3191241716373120793L;
 
 }
