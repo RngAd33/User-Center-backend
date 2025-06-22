@@ -78,4 +78,5 @@ public interface UserService extends IService<User> {
      * @return
      */
     List<UserVO> getUserVOList(List<User> userList);
+
 }
