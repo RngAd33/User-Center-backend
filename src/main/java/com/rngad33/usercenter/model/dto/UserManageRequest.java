@@ -1,4 +1,4 @@
-package com.rngad33.usercenter.model.request;
+package com.rngad33.usercenter.model.dto;
 
 import lombok.Data;
 import java.io.Serializable;

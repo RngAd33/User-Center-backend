@@ -5,11 +5,13 @@ import com.rngad33.usercenter.common.BaseResponse;
 import com.rngad33.usercenter.model.enums.ErrorCodeEnum;
 import com.rngad33.usercenter.manager.UserManager;
 import com.rngad33.usercenter.model.entity.User;
-import com.rngad33.usercenter.model.request.UserLoginRequest;
-import com.rngad33.usercenter.model.request.UserManageRequest;
-import com.rngad33.usercenter.model.request.UserRegisterRequest;
+import com.rngad33.usercenter.model.dto.UserLoginRequest;
+import com.rngad33.usercenter.model.dto.UserManageRequest;
+import com.rngad33.usercenter.model.dto.UserRegisterRequest;
+import com.rngad33.usercenter.model.vo.UserVO;
 import com.rngad33.usercenter.service.UserService;
 import com.rngad33.usercenter.utils.ResultUtils;
+import com.rngad33.usercenter.utils.ThrowUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -116,6 +118,27 @@ public class UserController {
     public BaseResponse<List<User>> searchUsers(String userName, HttpServletRequest request) {
         List<User> users = userService.searchUsers(userName, request);
         return ResultUtils.success(users);
+    }
+
+    /**
+     * 根据 id 获取用户（仅管理员）
+     */
+    @GetMapping("/get")
+    public BaseResponse<User> getUserById(long id) {
+        ThrowUtils.throwIf(id <= 0, ErrorCodeEnum.PARAMS_ERROR);
+        User user = userService.getById(id);
+        ThrowUtils.throwIf(user == null, ErrorCodeEnum.NO_PARAMS);
+        return ResultUtils.success(user);
+    }
+
+    /**
+     * 根据 id 获取包装类
+     */
+    @GetMapping("/get/vo")
+    public BaseResponse<UserVO> getUserVOById(long id) {
+        BaseResponse<User> response = getUserById(id);
+        User user = response.getData();
+        return ResultUtils.success(userService.getUserVO(user));
     }
 
     /**

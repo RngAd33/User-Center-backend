@@ -2,6 +2,7 @@ package com.rngad33.usercenter.service;
 
 import com.rngad33.usercenter.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rngad33.usercenter.model.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -62,4 +63,19 @@ public interface UserService extends IService<User> {
      */
     Integer userOrBan(Long id, HttpServletRequest request);
 
+    /**
+     * 获取单个用户信息
+     *
+     * @param user
+     * @return
+     */
+    UserVO getUserVO(User user);
+
+    /**
+     * 获取用户列表
+     *
+     * @param userList
+     * @return
+     */
+    List<UserVO> getUserVOList(List<User> userList);
 }

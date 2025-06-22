@@ -1,13 +1,15 @@
 package com.rngad33.usercenter.manager;
 
+import com.rngad33.usercenter.constant.AESConstant;
 import com.rngad33.usercenter.constant.ErrorConstant;
 import com.rngad33.usercenter.constant.UserConstant;
-import com.rngad33.usercenter.model.enums.UserRoleEnum;
-import com.rngad33.usercenter.model.request.UserManageRequest;
+import com.rngad33.usercenter.model.enums.user.UserRoleEnum;
+import com.rngad33.usercenter.model.dto.UserManageRequest;
 import com.rngad33.usercenter.model.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -89,6 +91,31 @@ public class UserManager {
         Long id = userManageRequest.getId();
         if (id <= 0) return null;
         return id;
+    }
+
+    /**
+     * 用户脱敏
+     * 使用掩码隐藏敏感信息，保障传输层安全
+     * @param user 脱敏前的账户
+     * @return 脱敏后的账户
+     */
+    public User getSafeUser(User user) {
+        if (user == null) return null;
+        User safeUser = new User();
+        safeUser.setId(user.getId());
+        safeUser.setUserName(user.getUserName());
+        safeUser.setPlanetCode(user.getPlanetCode());
+        safeUser.setRole(user.getRole());
+        safeUser.setAvatarUrl(user.getAvatarUrl());
+        safeUser.setGender(user.getGender());
+        safeUser.setUserPassword(AESConstant.CONFUSION);
+        safeUser.setAge(user.getAge());
+        safeUser.setPhone(AESConstant.CONFUSION);
+        safeUser.setEmail(user.getEmail());
+        safeUser.setUserStatus(user.getUserStatus());
+        safeUser.setCreateTime(user.getCreateTime());
+        safeUser.setUpdateTime(new Date());
+        return safeUser;
     }
 
 }

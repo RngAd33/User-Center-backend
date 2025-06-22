@@ -1,4 +1,4 @@
-package com.rngad33.usercenter.model.enums;
+package com.rngad33.usercenter.model.enums.user;
 
 import lombok.Getter;
 

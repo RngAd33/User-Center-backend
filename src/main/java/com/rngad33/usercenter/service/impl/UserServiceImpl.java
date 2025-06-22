@@ -1,16 +1,18 @@
 package com.rngad33.usercenter.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngad33.usercenter.constant.AESConstant;
 import com.rngad33.usercenter.constant.ErrorConstant;
 import com.rngad33.usercenter.constant.UserConstant;
 import com.rngad33.usercenter.exception.MyException;
+import com.rngad33.usercenter.manager.UserManager;
 import com.rngad33.usercenter.utils.AESUtils;
 import com.rngad33.usercenter.utils.SpecialCharValidator;
 import com.rngad33.usercenter.model.enums.ErrorCodeEnum;
-import com.rngad33.usercenter.model.enums.UserRoleEnum;
-import com.rngad33.usercenter.model.enums.UserStatusEnum;
+import com.rngad33.usercenter.model.enums.user.UserStatusEnum;
+import com.rngad33.usercenter.model.vo.UserVO;
 import com.rngad33.usercenter.mapper.UserMapper;
 import com.rngad33.usercenter.model.entity.User;
 import com.rngad33.usercenter.service.UserService;
@@ -18,10 +20,11 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,6 +38,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private UserManager userManager;
 
     /**
      * 用户注册
@@ -154,7 +160,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         // 4. 信息脱敏
-        User safeUser = getSafeUser(user);
+        User safeUser = userManager.getSafeUser(user);
 
         // 5. 记录用户登录态（已脱敏）
         request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, safeUser);
@@ -179,7 +185,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         User user = this.getById(id);
-        return getSafeUser(user);
+        return userManager.getSafeUser(user);
     }
 
     /**
@@ -253,28 +259,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 用户脱敏
-     * 使用掩码隐藏敏感信息，保障传输层安全
-     * @param user 脱敏前的账户
-     * @return 脱敏后的账户
+     * 获取单个用户信息
+     *
+     * @param user
+     * @return
      */
-    private static User getSafeUser(User user) {
-        if (user == null) return null;
-        User safeUser = new User();
-        safeUser.setId(user.getId());
-        safeUser.setUserName(user.getUserName());
-        safeUser.setPlanetCode(user.getPlanetCode());
-        safeUser.setRole(user.getRole());
-        safeUser.setAvatarUrl(user.getAvatarUrl());
-        safeUser.setGender(user.getGender());
-        safeUser.setUserPassword(AESConstant.CONFUSION);
-        safeUser.setAge(user.getAge());
-        safeUser.setPhone(AESConstant.CONFUSION);
-        safeUser.setEmail(user.getEmail());
-        safeUser.setUserStatus(user.getUserStatus());
-        safeUser.setCreateTime(user.getCreateTime());
-        safeUser.setUpdateTime(new Date());
-        return safeUser;
+    @Override
+    public UserVO getUserVO(User user) {
+        if (user == null) {
+            return null;
+        }
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user, userVO);
+        return userVO;
     }
+
+    /**
+     * 获取用户列表
+     *
+     * @param userList
+     * @return
+     */
+    @Override
+    public List<UserVO> getUserVOList(List<User> userList) {
+        if (CollUtil.isEmpty(userList)) {
+            return new ArrayList<>();
+        }
+        return userList.stream().map(this::getUserVO).collect(Collectors.toList());
+    }
+
 
 }
