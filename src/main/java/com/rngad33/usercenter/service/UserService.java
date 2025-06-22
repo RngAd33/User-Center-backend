@@ -1,5 +1,8 @@
 package com.rngad33.usercenter.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.rngad33.usercenter.model.dto.UserAddRequest;
+import com.rngad33.usercenter.model.dto.UserQueryRequest;
 import com.rngad33.usercenter.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rngad33.usercenter.model.vo.UserVO;
@@ -54,6 +57,23 @@ public interface UserService extends IService<User> {
      * @return 用户列表
      */
     List<User> searchUsers(String userName, HttpServletRequest request);
+
+    /**
+     * 分页查询对象构建
+     *
+     * @param userQueryRequest 用户查询请求对象
+     * @return QueryWrapper 查询条件构造器
+     */
+    QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
+
+    /**
+     * 添加用户（仅管理员）
+     *
+     * @param userAddRequest
+     * @return
+     * @throws Exception
+     */
+    Long addUser(UserAddRequest userAddRequest) throws Exception ;
 
     /**
      * 用户封禁 / 解封（仅管理员）

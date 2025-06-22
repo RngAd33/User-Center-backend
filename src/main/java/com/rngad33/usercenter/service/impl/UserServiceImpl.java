@@ -1,6 +1,8 @@
 package com.rngad33.usercenter.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngad33.usercenter.constant.AESConstant;
@@ -8,6 +10,8 @@ import com.rngad33.usercenter.constant.ErrorConstant;
 import com.rngad33.usercenter.constant.UserConstant;
 import com.rngad33.usercenter.exception.MyException;
 import com.rngad33.usercenter.manager.UserManager;
+import com.rngad33.usercenter.model.dto.UserAddRequest;
+import com.rngad33.usercenter.model.dto.UserQueryRequest;
 import com.rngad33.usercenter.utils.AESUtils;
 import com.rngad33.usercenter.utils.SpecialCharValidator;
 import com.rngad33.usercenter.model.enums.ErrorCodeEnum;
@@ -16,6 +20,7 @@ import com.rngad33.usercenter.model.vo.UserVO;
 import com.rngad33.usercenter.mapper.UserMapper;
 import com.rngad33.usercenter.model.entity.User;
 import com.rngad33.usercenter.service.UserService;
+import com.rngad33.usercenter.utils.ThrowUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -220,6 +225,55 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     user.setUserPassword(AESConstant.CONFUSION);   // 密码保护
                     return user;
                 }).collect(Collectors.toList());
+    }
+
+    /**
+     * 分页查询对象构建
+     *
+     * @param userQueryRequest 用户查询请求对象
+     * @return QueryWrapper 查询条件构造器
+     */
+    @Override
+    public QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest) {
+        if (userQueryRequest == null) {
+            throw new MyException(ErrorCodeEnum.NO_PARAMS, "请求参数为空");
+        }
+        Long id = userQueryRequest.getId();
+        String userName = userQueryRequest.getUserName();
+        String planetCode = userQueryRequest.getPlanetCode();
+        Integer role = userQueryRequest.getRole();
+        String phone = userQueryRequest.getPhone();
+        String email = userQueryRequest.getEmail();
+        Integer userStatus = userQueryRequest.getUserStatus();
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(ObjUtil.isNotNull(id), "id", id);
+        queryWrapper.like(StrUtil.isNotBlank(userName), "user_name", userName);
+        queryWrapper.eq(StrUtil.isNotBlank(planetCode), "planet_code", planetCode);
+        queryWrapper.eq(ObjUtil.isNotNull(role), "role", role);
+        queryWrapper.eq(StrUtil.isNotBlank(phone), "phone", phone);
+        queryWrapper.eq(StrUtil.isNotBlank(email), "email", email);
+        queryWrapper.eq(ObjUtil.isNotNull(userStatus), "user_status", userStatus);
+        return queryWrapper;
+    }
+
+    /**
+     * 添加用户（仅管理员）
+     *
+     * @param userAddRequest
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Long addUser(UserAddRequest userAddRequest) throws Exception {
+        User user = new User();
+        BeanUtils.copyProperties(userAddRequest, user);
+        // 默认密码 12345678
+        final String DEFAULT_PASSWORD = "12345678";
+        String encryptPassword = AESUtils.doEncrypt(DEFAULT_PASSWORD);
+        user.setUserPassword(encryptPassword);
+        boolean result = this.save(user);
+        ThrowUtils.throwIf(!result, ErrorCodeEnum.USER_LOSE_ACTION);
+        return user.getId();
     }
 
     /**

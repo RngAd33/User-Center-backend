@@ -1,16 +1,14 @@
 package com.rngad33.usercenter.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngad33.usercenter.annotation.AuthCheck;
 import com.rngad33.usercenter.constant.UserConstant;
 import com.rngad33.usercenter.exception.MyException;
 import com.rngad33.usercenter.common.BaseResponse;
-import com.rngad33.usercenter.model.dto.UserUpdateRequest;
+import com.rngad33.usercenter.model.dto.*;
 import com.rngad33.usercenter.model.enums.ErrorCodeEnum;
 import com.rngad33.usercenter.manager.UserManager;
 import com.rngad33.usercenter.model.entity.User;
-import com.rngad33.usercenter.model.dto.UserLoginRequest;
-import com.rngad33.usercenter.model.dto.UserManageRequest;
-import com.rngad33.usercenter.model.dto.UserRegisterRequest;
 import com.rngad33.usercenter.model.vo.UserVO;
 import com.rngad33.usercenter.service.UserService;
 import com.rngad33.usercenter.utils.ResultUtils;
@@ -143,6 +141,39 @@ public class UserController {
         BaseResponse<User> response = getUserById(id);
         User user = response.getData();
         return ResultUtils.success(userService.getUserVO(user));
+    }
+
+    /**
+     * 分页查询对象构建
+     *
+     * @param userQueryRequest 用户查询请求对象
+     * @return QueryWrapper 查询条件构造器
+     */
+    @GetMapping("/list/page")
+    public BaseResponse<Page<UserVO>> listUsersByPage(@RequestBody UserQueryRequest userQueryRequest) {
+        ThrowUtils.throwIf(userQueryRequest == null, ErrorCodeEnum.PARAMS_ERROR);
+        long current = userQueryRequest.getCurrent();
+        long pageSize = userQueryRequest.getPageSize();
+        Page<User> userPage = userService.page(new Page<>(current, pageSize),
+                userService.getQueryWrapper(userQueryRequest));
+        Page<UserVO> userVOPage = new Page<>(current, pageSize, userPage.getTotal());
+        List<UserVO> userVOList = userService.getUserVOList(userPage.getRecords());
+        userVOPage.setRecords(userVOList);
+        return ResultUtils.success(userVOPage);
+    }
+
+    /**
+     * 添加用户（仅管理员）
+     *
+     * @param userAddRequest
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/admin/add")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Long> addUser(@RequestBody UserAddRequest userAddRequest) throws Exception {
+        ThrowUtils.throwIf(userAddRequest == null, ErrorCodeEnum.PARAMS_ERROR);
+        return ResultUtils.success(userService.addUser(userAddRequest));
     }
 
     /**
