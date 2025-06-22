@@ -135,6 +135,9 @@ public class UserController {
 
     /**
      * 根据id获取用户（用户）
+     *
+     * @param id
+     * @return
      */
     @GetMapping("/get/vo")
     public BaseResponse<UserVO> getUserVOById(long id) {
@@ -147,7 +150,7 @@ public class UserController {
      * 分页获取用户列表
      *
      * @param userQueryRequest 用户查询请求对象
-     * @return QueryWrapper 查询条件构造器
+     * @return userVOPage
      */
     @GetMapping("/list/page")
     public BaseResponse<Page<UserVO>> listUsersByPage(@RequestBody UserQueryRequest userQueryRequest) {
@@ -179,8 +182,9 @@ public class UserController {
     /**
      * 用户封禁 / 解封（仅管理员）
      *
-     * @param userManageRequest 用户管理请求体
-     * @return 操作后用户状态
+     * @param userManageRequest
+     * @param request
+     * @return
      */
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @PostMapping("/admin/ban")
@@ -198,7 +202,7 @@ public class UserController {
      * 用户删除（仅管理员，逻辑删除）
      *
      * @param userManageRequest 用户管理请求体
-     * @return 删除成功与否
+     * @return 删除结果
      */
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @PostMapping("/admin/delete")
@@ -209,7 +213,8 @@ public class UserController {
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         boolean result = userService.removeById(id);   // 无需业务层
-        return ResultUtils.success(result);
+        ThrowUtils.throwIf(!result, ErrorCodeEnum.USER_LOSE_ACTION);
+        return ResultUtils.success(true);
     }
 
     /**
