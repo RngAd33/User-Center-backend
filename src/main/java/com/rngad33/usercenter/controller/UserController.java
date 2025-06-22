@@ -144,7 +144,7 @@ public class UserController {
     }
 
     /**
-     * 分页查询对象构建
+     * 分页获取用户列表
      *
      * @param userQueryRequest 用户查询请求对象
      * @return QueryWrapper 查询条件构造器
