@@ -1,4 +1,4 @@
-package com.rngad33.usercenter.annotation.;
+package com.rngad33.usercenter.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
