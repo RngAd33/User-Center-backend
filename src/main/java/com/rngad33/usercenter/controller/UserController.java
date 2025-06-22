@@ -43,7 +43,6 @@ public class UserController {
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest)
             throws Exception {
         if (userRegisterRequest == null) {
-            //  throw new RunException(ErrorCodeEnum.USER_LOSE_ACTION);
             throw new MyException(ErrorCodeEnum.USER_LOSE_ACTION);
         }
         String userName = userRegisterRequest.getUserName();
@@ -121,7 +120,7 @@ public class UserController {
     }
 
     /**
-     * 根据 id 获取用户（仅管理员）
+     * 根据id获取用户（管理员）
      */
     @GetMapping("/get")
     public BaseResponse<User> getUserById(long id) {
@@ -132,7 +131,7 @@ public class UserController {
     }
 
     /**
-     * 根据 id 获取包装类
+     * 根据id获取用户（用户）
      */
     @GetMapping("/get/vo")
     public BaseResponse<UserVO> getUserVOById(long id) {

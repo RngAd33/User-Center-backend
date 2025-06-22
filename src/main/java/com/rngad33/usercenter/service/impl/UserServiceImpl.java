@@ -59,21 +59,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // - 长度限制
         if (userName.length() < 3 || userPassword.length() < 8) {
             log.error(ErrorConstant.LENGTH_ERROR_MESSAGE);
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
         }
         // - 账户名称不能包含特殊字符
         if (SpecialCharValidator.doValidate(userName)) {
             log.error(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
         }
         // - 密码和确认密码必须一致
         if (!userPassword.equals(checkPassword)) {
             log.error(ErrorConstant.PASSWD_NOT_REPEAT_MESSAGE);
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
         }
         // - 星球编号限制总人数（总人数 = 10 ^ planetCode.length() - 1）
         if (planetCode.length() > 5) {
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
         }
 
         // 单机锁
@@ -86,7 +86,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             long count = userMapper.selectCount(queryWrapper);
             if (count > 0) {
                 log.error(ErrorConstant.USER_NAME_ALREADY_EXIST_MESSAGE);
-                throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+                throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
             }
             // - 编号查重
             queryWrapper = new QueryWrapper<>();
@@ -94,7 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             count = userMapper.selectCount(queryWrapper);
             if (count > 0) {
                 log.error(ErrorConstant.PLANET_CODE_ALREADY_EXIST_MESSAGE);
-                throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+                throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
             }
 
             // 3. 密码加密
@@ -102,7 +102,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             String encryptedPassword = AESUtils.doEncrypt(userPassword);
             if (encryptedPassword == null) {
                 log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
-                throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+                throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
             }
 
             // 4. 向数据库插入数据
@@ -114,7 +114,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
-                throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+                throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
             }
 
             // 5. 返回新账户id
@@ -137,7 +137,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // - 账户名称不能包含特殊字符
         if (SpecialCharValidator.doValidate(userName)) {
             log.error(ErrorConstant.USER_HAVE_SPECIAL_CHAR_MESSAGE);
-            throw new MyException(ErrorCodeEnum.PARAM_ERROR);
+            throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
         }
 
         // 2. 密码加密
@@ -287,6 +287,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return userList.stream().map(this::getUserVO).collect(Collectors.toList());
     }
-
 
 }
