@@ -9,7 +9,7 @@
         <version>3.3.0</version>
     </parent>
 
-    <groupId>com.yupi</groupId>
+    <groupId>com.rngad33</groupId>
     <artifactId>user-center</artifactId>
     <version>1.0-SNAPSHOT</version>
 
