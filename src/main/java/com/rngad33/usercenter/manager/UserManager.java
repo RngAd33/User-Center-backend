@@ -108,12 +108,10 @@ public class UserManager {
         User safeUser = new User();
         safeUser.setId(user.getId());
         safeUser.setUserName(user.getUserName());
-        safeUser.setPlanetCode(user.getPlanetCode());
         safeUser.setRole(user.getRole());
         safeUser.setAvatarUrl(user.getAvatarUrl());
         safeUser.setGender(user.getGender());
         safeUser.setUserPassword(AESConstant.CONFUSION);
-        safeUser.setAge(user.getAge());
         safeUser.setPhone(AESConstant.CONFUSION);
         safeUser.setEmail(user.getEmail());
         safeUser.setUserStatus(user.getUserStatus());

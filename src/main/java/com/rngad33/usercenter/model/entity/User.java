@@ -27,11 +27,6 @@ public class User implements Serializable {
     private String userName;
 
     /**
-     * 星球编号
-     */
-    private String planetCode;
-
-    /**
      * 身份？ 0-普通用户，1-管理员
      */
     private Integer role;
