@@ -53,11 +53,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param userName 账户
      * @param userPassword 密码
      * @param checkPassword 确认密码
-     * @param planetCode 星球编号
      * @return 新账户id
      */
     @Override
-    public Long userRegister(String userName, String userPassword, String checkPassword, String planetCode)
+    public Long userRegister(String userName, String userPassword, String checkPassword)
             throws Exception {
         // 1. 信息校验
         log.info("正在执行信息校验……");
@@ -76,10 +75,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.error(ErrorConstant.PASSWD_NOT_REPEAT_MESSAGE);
             throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
         }
-        // - 星球编号限制总人数（总人数 = 10 ^ planetCode.length() - 1）
-        if (planetCode.length() > 5) {
-            throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
-        }
 
         // 单机锁
         synchronized (userName.intern()) {
@@ -91,14 +86,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             long count = userMapper.selectCount(queryWrapper);
             if (count > 0) {
                 log.error(ErrorConstant.USER_NAME_ALREADY_EXIST_MESSAGE);
-                throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
-            }
-            // - 编号查重
-            queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("planetCode", planetCode);
-            count = userMapper.selectCount(queryWrapper);
-            if (count > 0) {
-                log.error(ErrorConstant.PLANET_CODE_ALREADY_EXIST_MESSAGE);
                 throw new MyException(ErrorCodeEnum.PARAMS_ERROR);
             }
 
@@ -115,7 +102,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = new User();
             user.setUserName(userName);
             user.setUserPassword(encryptedPassword);
-            user.setPlanetCode(planetCode);
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 log.error(ErrorConstant.USER_LOSE_ACTION_MESSAGE);
@@ -240,7 +226,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         Long id = userQueryRequest.getId();
         String userName = userQueryRequest.getUserName();
-        String planetCode = userQueryRequest.getPlanetCode();
         Integer role = userQueryRequest.getRole();
         String phone = userQueryRequest.getPhone();
         String email = userQueryRequest.getEmail();
@@ -248,7 +233,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(ObjUtil.isNotNull(id), "id", id);
         queryWrapper.like(StrUtil.isNotBlank(userName), "user_name", userName);
-        queryWrapper.eq(StrUtil.isNotBlank(planetCode), "planet_code", planetCode);
         queryWrapper.eq(ObjUtil.isNotNull(role), "role", role);
         queryWrapper.eq(StrUtil.isNotBlank(phone), "phone", phone);
         queryWrapper.eq(StrUtil.isNotBlank(email), "email", email);

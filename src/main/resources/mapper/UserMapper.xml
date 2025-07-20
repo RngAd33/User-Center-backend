@@ -7,12 +7,10 @@
     <resultMap id="BaseResultMap" type="com.rngad33.usercenter.model.entity.User">
         <id property="id" column="id" />
         <result property="userName" column="userName" />
-        <result property="planetCode" column="planetCode" />
         <result property="role" column="role" />
         <result property="avatarUrl" column="avatarUrl" />
         <result property="gender" column="gender" />
         <result property="userPassword" column="userPassword" />
-        <result property="age" column="age" />
         <result property="phone" column="phone" />
         <result property="email" column="email" />
         <result property="userStatus" column="userStatus" />
@@ -22,7 +20,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,userName,planetCode,role,avatarUrl,gender,userPassword,
+        id,userName,role,avatarUrl,gender,userPassword,
         age,phone,email,userStatus,createTime,updateTime,isDelete
     </sql>
 </mapper>
