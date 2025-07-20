@@ -21,6 +21,6 @@
 
     <sql id="Base_Column_List">
         id,userName,role,avatarUrl,gender,userPassword,
-        age,phone,email,userStatus,createTime,updateTime,isDelete
+        phone,email,userStatus,createTime,updateTime,isDelete
     </sql>
 </mapper>
